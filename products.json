@@ -396,7 +396,6 @@
       "name": "LED Pillar Candle",
       "rate": "80 / 85 / 90 / 95 / 100 / 105 / 110",
       "rateNote": "by height",
-      "packing": "",
       "specs": {
         "Height": "4 / 5 / 6 / 7 / 8 / 9 / 10 inch",
         "Diameter": "3 inch",
@@ -957,7 +956,6 @@
       "name": "Rope Light — 45 Metre Roll",
       "rate": "750",
       "rateNote": "per roll",
-      "packing": "",
       "specs": {
         "Length": "45 metre roll",
         "LED": "2835 / 120 LED",
