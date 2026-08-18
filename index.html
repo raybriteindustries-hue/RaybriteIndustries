@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Raybrite — Product Catalogue</title>
+<meta name="description" content="Raybrite Industries wholesale LED lighting catalogue — decorative, festive and commercial.">
+<style>
+  :root{
+    --bg:#14110E; --raise:#1B1712; --card:#201B16; --edge:#2C251E;
+    --txt:#F4F0E9; --muted:#A79D91; --faint:#7A7168;
+    --amber:#E4A54D; --amber-bg:#2B2116; --amber-edge:#3A2C1C; --sky:#8FBBEE;
+    --gap:16px; --radius:14px; --maxw:760px;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+  html,body{margin:0}
+  body{background:var(--bg); color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.5; overflow-x:hidden; -webkit-font-smoothing:antialiased}
+  img{display:block; max-width:100%}
+  button{font:inherit; color:inherit; background:none; border:none; cursor:pointer}
+  :focus-visible{outline:2px solid var(--amber); outline-offset:2px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 var(--gap)}
+
+  .bar{position:sticky; top:0; z-index:40; background:rgba(20,17,14,.86);
+    backdrop-filter:saturate(140%) blur(10px); border-bottom:1px solid var(--edge);
+    padding-top:env(safe-area-inset-top)}
+  .bar-in{display:flex; align-items:center; gap:12px; height:56px; max-width:var(--maxw); margin:0 auto; padding:0 var(--gap)}
+  .bar img{height:26px; width:auto}
+  .bar .back{display:none; align-items:center; gap:6px; font-size:15px; color:var(--muted);
+    padding:10px 8px; margin-left:-8px; min-height:44px}
+  .bar .back svg{width:18px;height:18px}
+  body[data-view="category"] .bar .back{display:inline-flex}
+  body[data-view="category"] .bar .brandwrap{display:none}
+  .bar .spacer{flex:1}
+  .bar .tag{font-size:11px; letter-spacing:1.5px; color:var(--faint); text-transform:uppercase}
+
+  .hero{padding:34px 0 8px}
+  .hero .eyebrow{font-size:12px; letter-spacing:3px; color:var(--sky); text-transform:uppercase; margin-bottom:14px}
+  .hero h1{font-family:Georgia,"Times New Roman",serif; font-weight:400;
+    font-size:clamp(38px,11vw,60px); line-height:1.02; margin:0; letter-spacing:-.5px}
+  .hero h1 b{display:block; font-weight:700; color:var(--amber)}
+  .hero p{color:var(--muted); font-size:15px; margin:18px 0 0; max-width:44ch}
+  .stats{display:flex; gap:26px; margin:24px 0 6px}
+  .stats div span{display:block; font-size:26px; font-weight:700; line-height:1}
+  .stats div small{display:block; font-size:11px; color:var(--muted); margin-top:5px; letter-spacing:.4px}
+
+  .homesearch{margin:22px 0 4px}
+  .homesearch .box{display:flex; align-items:center; gap:10px; background:var(--card);
+    border:1px solid var(--edge); border-radius:12px; padding:0 14px; height:48px}
+  .homesearch svg{width:18px; height:18px; stroke:var(--faint); flex:none}
+  .homesearch input{flex:1; background:none; border:none; outline:none; color:var(--txt); font-size:16px}
+  .homesearch input::placeholder{color:var(--faint)}
+  .prow .cat-tag{display:inline-block; font-size:10.5px; color:var(--faint); margin-top:4px;
+    letter-spacing:.3px; text-transform:uppercase}
+
+  .sect{display:flex; align-items:baseline; justify-content:space-between; margin:30px 0 14px}
+  .sect h2{font-size:13px; letter-spacing:2px; text-transform:uppercase; color:var(--faint); font-weight:700; margin:0}
+  .sect small{font-size:12px; color:var(--faint)}
+
+  .cats{display:grid; grid-template-columns:1fr 1fr; gap:12px; padding-bottom:8px}
+  @media(max-width:430px){ .cats{grid-template-columns:1fr} }
+  .cat{position:relative; text-align:left; border:1px solid var(--edge); border-radius:var(--radius);
+    background:var(--card); overflow:hidden; min-height:150px; display:flex; flex-direction:column;
+    justify-content:flex-end; transition:transform .12s ease}
+  .cat:active{transform:scale(.985)}
+  .cat .thumb{position:absolute; inset:0; z-index:0}
+  .cat .thumb img{width:100%; height:100%; object-fit:cover; opacity:.5}
+  .cat .thumb::after{content:""; position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(20,17,14,.15) 0%, rgba(20,17,14,.55) 45%, rgba(20,17,14,.94) 100%)}
+  .cat .body{position:relative; z-index:1; padding:14px}
+  .cat .num{font-size:12px; font-weight:700; color:var(--amber); letter-spacing:1px}
+  .cat .nm{font-size:17px; font-weight:700; margin-top:3px; line-height:1.15}
+  .cat .cnt{font-size:12.5px; color:var(--muted); margin-top:4px}
+  .cat .go{position:absolute; top:13px; right:13px; z-index:1; width:26px; height:26px;
+    border-radius:50%; background:rgba(228,165,77,.14); display:grid; place-items:center}
+  .cat .go svg{width:14px; height:14px; stroke:var(--amber)}
+
+  #catView{display:none}
+  body[data-view="category"] #home{display:none}
+  body[data-view="category"] #catView{display:block}
+  .catHead{padding:26px 0 4px}
+  .catHead .num{font-size:13px; letter-spacing:2px; color:var(--amber); font-weight:700}
+  .catHead h1{font-family:Georgia,serif; font-weight:700; font-size:clamp(28px,8vw,40px); margin:6px 0 0; line-height:1.05}
+  .catHead p{color:var(--muted); font-size:14px; margin:12px 0 0; max-width:50ch}
+  .search{position:sticky; top:56px; z-index:30; background:var(--bg); padding:14px 0 10px}
+  .search .box{display:flex; align-items:center; gap:10px; background:var(--card);
+    border:1px solid var(--edge); border-radius:11px; padding:0 13px; height:44px}
+  .search svg{width:17px; height:17px; stroke:var(--faint); flex:none}
+  .search input{flex:1; background:none; border:none; outline:none; color:var(--txt); font-size:15px}
+  .search input::placeholder{color:var(--faint)}
+
+  .plist{display:flex; flex-direction:column; gap:10px; padding-bottom:20px}
+  .prow{display:flex; gap:13px; align-items:center; text-align:left; width:100%;
+    background:var(--card); border:1px solid var(--edge); border-radius:var(--radius);
+    padding:10px; transition:transform .1s ease}
+  .prow:active{transform:scale(.99)}
+  .prow .pic{width:76px; height:76px; flex:none; border-radius:10px; overflow:hidden; background:var(--raise)}
+  .prow .pic img{width:100%; height:100%; object-fit:cover}
+  .prow .info{flex:1; min-width:0}
+  .prow .nm{font-size:15px; font-weight:600; line-height:1.25}
+  .prow .sku{font-size:11px; color:var(--faint); letter-spacing:.6px; margin-top:3px}
+  .prow .rate{margin-top:6px; font-size:14px; font-weight:700; color:var(--amber)}
+  .prow .rate span{font-size:11px; font-weight:500; color:var(--muted)}
+  .prow .chev{flex:none; width:18px; height:18px; stroke:var(--faint)}
+  .empty{color:var(--faint); text-align:center; padding:40px 0; font-size:14px}
+
+  .sheet-bg{position:fixed; inset:0; z-index:50; background:rgba(0,0,0,.6);
+    opacity:0; pointer-events:none; transition:opacity .22s ease}
+  .sheet-bg.on{opacity:1; pointer-events:auto}
+  .sheet{position:fixed; left:0; right:0; bottom:0; z-index:51; max-width:var(--maxw); margin:0 auto;
+    background:var(--raise); border-radius:20px 20px 0 0; border:1px solid var(--edge); border-bottom:none;
+    transform:translateY(102%); transition:transform .28s cubic-bezier(.32,.72,0,1);
+    max-height:92vh; display:flex; flex-direction:column; padding-bottom:env(safe-area-inset-bottom)}
+  .sheet.on{transform:translateY(0)}
+  .grab{width:38px; height:4px; border-radius:2px; background:#463c31; margin:9px auto 2px; flex:none}
+  .sheet .scroll{overflow-y:auto; -webkit-overflow-scrolling:touch; padding:8px 18px 22px}
+  .sheet .close{position:absolute; top:9px; right:11px; z-index:2; width:44px; height:44px;
+    border-radius:50%; background:var(--card); display:grid; place-items:center}
+  .sheet .close svg{width:15px; height:15px; stroke:var(--muted)}
+  .gallery{display:flex; gap:8px; overflow-x:auto; scroll-snap-type:x mandatory; margin:6px -18px 0; padding:0 18px 4px}
+  .gallery::-webkit-scrollbar{display:none}
+  .gallery img{height:230px; width:auto; border-radius:12px; scroll-snap-align:center; background:var(--card); border:1px solid var(--edge)}
+  .gallery.one img{width:100%; height:auto; max-height:280px; object-fit:cover}
+  .sheet h3{font-size:22px; font-weight:700; margin:16px 0 2px; line-height:1.2}
+  .sheet .dsku{font-size:12px; color:var(--amber); font-weight:700; letter-spacing:1px}
+  .specs{margin:16px 0 0; border-top:1px solid var(--edge)}
+  .specs .r{display:flex; justify-content:space-between; gap:16px; padding:11px 0; border-bottom:1px solid var(--edge)}
+  .specs .r dt{font-size:12px; color:var(--faint); text-transform:uppercase; letter-spacing:.6px; flex:none}
+  .specs .r dd{font-size:14px; font-weight:600; margin:0; text-align:right}
+  .ratebox{margin-top:16px; background:var(--amber-bg); border:1px solid var(--amber-edge); border-radius:14px; padding:15px 16px}
+  .ratebox .lbl{font-size:10px; letter-spacing:1.5px; color:var(--amber); font-weight:700; text-transform:uppercase}
+  .ratebox .big{font-size:30px; font-weight:800; margin-top:4px; line-height:1}
+  .ratebox .big small{font-size:16px; font-weight:700}
+  .ratebox .note{font-size:12px; color:var(--muted); font-style:italic; margin-top:3px}
+  .ratebox .pk{font-size:13px; font-weight:600; margin-top:8px}
+
+  footer{border-top:1px solid var(--edge); margin-top:34px; padding:22px 0 40px; color:var(--faint); font-size:12px}
+  footer b{color:var(--muted); font-weight:600}
+
+  .err{margin:40px auto; max-width:600px; background:#2a1414; border:1px solid #5a2a2a;
+    border-radius:14px; padding:22px 24px; color:#f0dede}
+  .err h2{margin:0 0 8px; font-size:18px; color:#ff9d9d}
+  .err code{background:#1a0d0d; padding:2px 6px; border-radius:5px; font-size:13px; color:#ffcaca}
+  .err p{margin:8px 0; font-size:14px; line-height:1.6}
+
+  @media(prefers-reduced-motion:reduce){*{transition:none !important}}
+</style>
+</head>
+<body data-view="home">
+
+  <div class="bar">
+    <div class="bar-in">
+      <button class="back" id="back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        All categories
+      </button>
+      <span class="brandwrap"><img src="logo.png" alt="Raybrite"></span>
+      <span class="spacer"></span>
+      <span class="tag">Wholesale</span>
+    </div>
+  </div>
+
+  <main id="home">
+    <div class="wrap">
+      <section class="hero">
+        <div class="eyebrow">2026 Edition</div>
+        <h1>Product<b>Catalogue</b></h1>
+        <p>Decorative, festive and commercial LED lighting. Wholesale rates and carton packing throughout.</p>
+        <div class="stats">
+          <div><span id="stProd">—</span><small>Products</small></div>
+          <div><span id="stCat">—</span><small>Categories</small></div>
+          <div><span>1</span><small>Yr warranty*</small></div>
+        </div>
+      </section>
+
+      <div class="homesearch">
+        <div class="box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input id="gq" type="search" placeholder="Search all products" autocomplete="off">
+        </div>
+      </div>
+
+      <div id="results" hidden>
+        <div class="sect"><h2 id="resCount"></h2></div>
+        <div class="plist" id="rlist"></div>
+      </div>
+
+      <div id="browse">
+        <div class="sect"><h2>Browse by category</h2><small>Tap to open</small></div>
+        <div class="cats" id="cats"></div>
+      </div>
+
+      <footer>
+        <b>Raybrite Industries</b> · Azadpur, Delhi 110033, India<br>
+        *1-year warranty on flood lighting. Rates are per piece, ex-Delhi, exclusive of GST.
+      </footer>
+    </div>
+  </main>
+
+  <main id="catView">
+    <div class="wrap">
+      <div class="catHead">
+        <div class="num" id="cNum"></div>
+        <h1 id="cName"></h1>
+        <p id="cBlurb"></p>
+      </div>
+    </div>
+    <div class="search">
+      <div class="wrap">
+        <div class="box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input id="q" type="search" placeholder="Search this category" autocomplete="off">
+        </div>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="plist" id="plist"></div>
+      <footer>Every product lists dimensions, LED count, colour, wholesale rate and carton packing.</footer>
+    </div>
+  </main>
+
+  <div class="sheet-bg" id="sheetBg"></div>
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true">
+    <div class="grab"></div>
+    <button class="close" id="closeSheet" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="scroll" id="sheetScroll"></div>
+  </div>
+
+<script>
+(function(){
+  var el = function(id){return document.getElementById(id)};
+  var esc = function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+  var IMGDIR = 'images/';
+
+  // Photo library, keyed by SKU. Filled in after the text loads so the
+  // catalogue is readable straight away even on a slow connection.
+  var PHOTOS = {};
+  var repaint = null;
+
+  function showError(title, lines){
+    document.body.dataset.view='home';
+    el('browse').innerHTML = '<div class="err"><h2>'+esc(title)+'</h2>'+
+      lines.map(function(l){return '<p>'+l+'</p>'}).join('')+'</div>';
+    el('home').querySelector('.homesearch').style.display='none';
+    var st=el('stProd'); if(st) st.textContent='!';
+  }
+
+  // A photo can be: an embedded picture (data:), a web address (http),
+  // or a plain filename sitting in the images folder.
+  function srcOf(f){
+    return /^(https?:|data:|\.{0,2}\/)/.test(f) ? f : IMGDIR + f;
+  }
+  function photosOf(p){
+    var list = PHOTOS[p.sku];
+    if(!Array.isArray(list) || !list.length) list = p.legacy || [];
+    return list.filter(Boolean).map(srcOf);
+  }
+
+  fetch('products.json', {cache:'no-store'})
+    .then(function(r){
+      if(!r.ok) throw {kind:'http', status:r.status};
+      return r.text();
+    })
+    .then(function(text){
+      var raw;
+      try { raw = JSON.parse(text); }
+      catch(e){ throw {kind:'json', msg:e.message}; }
+      boot(validateAndBuild(raw));
+      loadPhotos();
+    })
+    .catch(function(err){
+      if(err.kind==='http'){
+        showError('Could not load products.json',[
+          'The file <code>products.json</code> was not found next to this page (server said '+esc(err.status)+').',
+          'Make sure <code>products.json</code>, <code>images.json</code>, <code>index.html</code> and <code>logo.png</code> are all in the same folder.',
+          'Note: double-clicking index.html on your own computer blocks this. It works once uploaded to GitHub.'
+        ]);
+      } else if(err.kind==='json'){
+        showError('There is a typo in products.json',[
+          'The file could not be read as valid data. This is almost always a missing comma, quote, or bracket.',
+          'Error detail: <code>'+esc(err.msg)+'</code>',
+          'Fix: open <code>edit.html</code> and make the change there instead — it cannot produce a broken file.'
+        ]);
+      } else if(err.kind==='validate'){
+        showError('A product entry needs fixing', err.lines);
+      } else {
+        showError('Something went wrong', [esc(String(err&&err.message||err))]);
+      }
+    });
+
+  // Photos load second and are optional — a missing images.json is not an error.
+  function loadPhotos(){
+    fetch('images.json', {cache:'no-store'})
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(map){
+        if(map && typeof map==='object'){ PHOTOS = map; if(repaint) repaint(); }
+      })
+      .catch(function(){ /* catalogue still works without photos */ });
+  }
+
+  function validateAndBuild(raw){
+    var problems=[];
+    if(!raw || typeof raw!=='object') throw {kind:'validate', lines:['The file is empty or not structured correctly.']};
+    if(!Array.isArray(raw.categories)) problems.push('The <code>categories</code> list is missing.');
+    if(!Array.isArray(raw.products)) problems.push('The <code>products</code> list is missing.');
+    if(problems.length) throw {kind:'validate', lines:problems};
+
+    var catByKey={};
+    raw.categories.forEach(function(c){ if(c&&c.key) catByKey[c.key]=c; });
+
+    raw.products.forEach(function(p,i){
+      var where='Product #'+(i+1)+(p&&p.name?' ("'+esc(p.name)+'")':'')+': ';
+      if(!p || typeof p!=='object'){ problems.push(where+'is not filled in correctly.'); return; }
+      if(!p.name) problems.push(where+'missing a <code>name</code>.');
+      if(!p.sku) problems.push(where+'missing a <code>sku</code> code.');
+      if(p.rate==null||p.rate==='') problems.push(where+'missing a <code>rate</code> (price).');
+      if(!p.category) problems.push(where+'missing a <code>category</code>.');
+      else if(!catByKey[p.category]) problems.push(where+'category <code>'+esc(p.category)+'</code> is not one of the categories listed at the top of the file.');
+    });
+    if(problems.length) throw {kind:'validate', lines:problems.slice(0,12)};
+
+    return raw.categories.map(function(c){
+      return { key:c.key, name:c.name||c.key, blurb:c.blurb||'',
+        products: raw.products.filter(function(p){return p.category===c.key}).map(adapt) };
+    }).filter(function(c){ return c.products.length>0; });
+  }
+
+  function adapt(p){
+    var specs = [];
+    if(p.specs && typeof p.specs==='object'){
+      Object.keys(p.specs).forEach(function(k){ specs.push([k, p.specs[k]]); });
+    }
+    return {
+      sku:p.sku, name:p.name, rate:String(p.rate),
+      rateNote:p.rateNote||'', packing:p.packing||'',
+      specs:specs, legacy:(Array.isArray(p.images)?p.images:null)
+    };
+  }
+
+  function boot(DATA){
+    el('stProd').textContent = DATA.reduce(function(a,c){return a+c.products.length},0);
+    el('stCat').textContent = DATA.length;
+
+    var FLAT=[];
+    DATA.forEach(function(c,ci){ c.products.forEach(function(p){ FLAT.push({p:p,ci:ci,cat:c.name}); }); });
+    function findBySku(sku){ for(var i=0;i<FLAT.length;i++) if(FLAT[i].p.sku===sku) return FLAT[i]; return null; }
+
+    function drawCats(){
+      el('cats').innerHTML = DATA.map(function(c,i){
+        var hero='';
+        for(var k=0;k<c.products.length && !hero;k++){ hero = photosOf(c.products[k])[0]||''; }
+        return '<button class="cat" data-cat="'+i+'">'+
+          (hero?'<span class="thumb"><img loading="lazy" src="'+esc(hero)+'" alt=""></span>':'')+
+          '<span class="go"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>'+
+          '<span class="body"><span class="num">'+String(i+1).padStart(2,'0')+'</span>'+
+          '<span class="nm">'+esc(c.name)+'</span>'+
+          '<span class="cnt">'+c.products.length+' products</span></span></button>';
+      }).join('');
+    }
+    drawCats();
+
+    function rowHTML(p, catName){
+      var note = p.rateNote ? ' <span>· '+esc(p.rateNote)+'</span>' : '';
+      var tag = catName ? '<span class="cat-tag">'+esc(catName)+'</span>' : '';
+      var first = photosOf(p)[0];
+      return '<button class="prow" data-sku="'+esc(p.sku)+'">'+
+        '<span class="pic">'+(first?'<img loading="lazy" src="'+esc(first)+'" alt="">':'')+'</span>'+
+        '<span class="info"><span class="nm">'+esc(p.name)+'</span>'+
+        '<span class="sku">'+esc(p.sku)+'</span>'+
+        '<span class="rate">₹'+esc(p.rate)+' <span>per pc</span>'+note+'</span>'+tag+'</span>'+
+        '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>';
+    }
+
+    var curCat=null;
+    function openCat(i){
+      curCat=DATA[i];
+      el('cNum').textContent='Section '+String(i+1).padStart(2,'0');
+      el('cName').textContent=curCat.name;
+      el('cBlurb').textContent=curCat.blurb;
+      el('q').value=''; renderList('');
+      document.body.dataset.view='category'; window.scrollTo(0,0);
+      location.hash='c'+i;
+    }
+    function renderList(term){
+      if(!curCat) return;
+      term=String(term||'').trim().toLowerCase();
+      var list=curCat.products.filter(function(p){
+        if(!term) return true;
+        var hay=(p.name+' '+p.sku+' '+p.specs.map(function(s){return s[1]}).join(' ')).toLowerCase();
+        return hay.indexOf(term)>-1;
+      });
+      el('plist').innerHTML=list.length?list.map(function(p){return rowHTML(p)}).join('')
+        :'<div class="empty">No products match “'+esc(term)+'”.</div>';
+    }
+    function goHome(){ document.body.dataset.view='home'; curCat=null;
+      if(location.hash) history.replaceState(null,'',location.pathname); }
+
+    function openSheet(p){
+      var list = photosOf(p);
+      var imgs = list.length
+        ? '<div class="gallery'+(list.length===1?' one':'')+'">'+list.map(function(s){return '<img src="'+esc(s)+'" alt="">'}).join('')+'</div>' : '';
+      var specs = p.specs.length ? '<dl class="specs">'+p.specs.map(function(s){
+        return '<div class="r"><dt>'+esc(s[0])+'</dt><dd>'+esc(s[1])+'</dd></div>'; }).join('')+'</dl>' : '';
+      var note = p.rateNote ? '<div class="note">per piece — '+esc(p.rateNote)+'</div>' : '<div class="note">per piece</div>';
+      var pk = p.packing ? 'Packing: '+esc(p.packing) : 'Packing on request';
+      el('sheetScroll').innerHTML = imgs +
+        '<div class="dsku">'+esc(p.sku)+'</div>'+'<h3>'+esc(p.name)+'</h3>'+ specs +
+        '<div class="ratebox"><div class="lbl">Wholesale rate</div>'+
+        '<div class="big"><small>₹</small> '+esc(p.rate)+'</div>'+note+
+        '<div class="pk">'+pk+'</div></div>';
+      el('sheetScroll').scrollTop=0;
+      el('sheetBg').classList.add('on'); el('sheet').classList.add('on');
+    }
+    function closeSheet(){ el('sheetBg').classList.remove('on'); el('sheet').classList.remove('on'); }
+
+    function globalSearch(term){
+      term=String(term||'').trim().toLowerCase();
+      if(!term){ el('results').hidden=true; el('browse').style.display=''; el('rlist').innerHTML=''; return; }
+      el('browse').style.display='none'; el('results').hidden=false;
+      var hits=FLAT.filter(function(o){ var p=o.p;
+        var hay=(p.name+' '+p.sku+' '+o.cat+' '+p.specs.map(function(s){return s[1]}).join(' ')).toLowerCase();
+        return hay.indexOf(term)>-1; });
+      el('resCount').textContent=hits.length?hits.length+(hits.length===1?' result':' results'):'No results';
+      el('rlist').innerHTML=hits.length?hits.map(function(o){return rowHTML(o.p,o.cat)}).join('')
+        :'<div class="empty">Nothing matches “'+esc(term)+'”. Try a product name, code, or colour.</div>';
+    }
+
+    // Called once the photo library arrives, so pictures appear without a reload.
+    repaint = function(){
+      drawCats();
+      if(curCat) renderList(el('q').value);
+      if(!el('results').hidden) globalSearch(el('gq').value);
+    };
+
+    el('cats').addEventListener('click',function(e){ var b=e.target.closest('.cat'); if(b) openCat(+b.dataset.cat); });
+    el('plist').addEventListener('click',function(e){ var b=e.target.closest('.prow'); if(!b||!curCat) return;
+      var p=curCat.products.find(function(x){return x.sku===b.dataset.sku}); if(p) openSheet(p); });
+    el('q').addEventListener('input',function(e){ renderList(e.target.value); });
+    el('gq').addEventListener('input',function(e){ globalSearch(e.target.value); });
+    el('rlist').addEventListener('click',function(e){ var b=e.target.closest('.prow'); if(!b) return;
+      var o=findBySku(b.dataset.sku); if(o) openSheet(o.p); });
+
+    el('back').addEventListener('click',goHome);
+    el('closeSheet').addEventListener('click',closeSheet);
+    el('sheetBg').addEventListener('click',closeSheet);
+    document.addEventListener('keydown',function(e){
+      if(e.key==='Escape'){ if(el('sheet').classList.contains('on')) closeSheet();
+        else if(document.body.dataset.view==='category') goHome(); } });
+
+    function fromHash(){ var m=/^#c(\d+)$/.exec(location.hash);
+      if(m&&DATA[+m[1]]) openCat(+m[1]); else goHome(); }
+    window.addEventListener('popstate',fromHash);
+    if(location.hash) fromHash();
+  }
+})();
+</script>
+</body>
+</html>

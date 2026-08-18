@@ -1,0 +1,1229 @@
+{
+  "categories": [
+    {
+      "key": "CUR",
+      "name": "Curtain & Festive Lights",
+      "blurb": "Plug-in curtain and hanging lights for Diwali, weddings and festive retail."
+    },
+    {
+      "key": "LMP",
+      "name": "Table & Night Lamps",
+      "blurb": "Rechargeable touch lamps, silicone night lights and crystal lamps."
+    },
+    {
+      "key": "CDL",
+      "name": "LED Candles & Diyas",
+      "blurb": "Flameless candles, tea lights and sensor diyas — battery and water-sensor models."
+    },
+    {
+      "key": "STR",
+      "name": "Decorative String Lights",
+      "blurb": "Battery and plug-in fairy strings in moulded, metal and gel finishes."
+    },
+    {
+      "key": "RPE",
+      "name": "Strip, Rope & Neon",
+      "blurb": "2835 and 5050 strip, rope and flexible neon in rolls and cut lengths."
+    },
+    {
+      "key": "PXL",
+      "name": "Pixel & Net Lights",
+      "blurb": "8 mm and 16 mm pixel LED for outlines, nets, waterfalls and trees."
+    },
+    {
+      "key": "FLD",
+      "name": "Flood & Commercial Lighting",
+      "blurb": "Flood, lens flood, track and cabinet lighting for shops and outdoor use."
+    },
+    {
+      "key": "ACC",
+      "name": "Electricals & Accessories",
+      "blurb": "Copper wire, extension boards and seasonal accessories."
+    }
+  ],
+  "products": [
+    {
+      "sku": "RB-CUR-01",
+      "category": "CUR",
+      "name": "SMD Star Curtain",
+      "rate": "180",
+      "packing": "50 pcs / carton",
+      "specs": {
+        "Length": "6 feet",
+        "LED": "110 pixel LED (5+5)",
+        "Colour": "Warm white, Multi"
+      }
+    },
+    {
+      "sku": "RB-CUR-02",
+      "category": "CUR",
+      "name": "5+5 SMD Diya Curtain",
+      "rate": "180",
+      "packing": "50 pcs / carton",
+      "specs": {
+        "Length": "3 metre",
+        "LED": "SMD waterproof",
+        "Colour": "Warm white / Multi"
+      }
+    },
+    {
+      "sku": "RB-CUR-03",
+      "category": "CUR",
+      "name": "Pan Ganesh Curtain",
+      "rate": "250",
+      "packing": "25 pcs / carton",
+      "specs": {
+        "Length": "3 metre",
+        "LED": "6+6 curtain",
+        "Colour": "Warm white"
+      }
+    },
+    {
+      "sku": "RB-CUR-04",
+      "category": "CUR",
+      "name": "Om Swastik Curtain",
+      "rate": "180",
+      "packing": "50 pcs / carton",
+      "specs": {
+        "Length": "3 metre",
+        "LED": "6+6 curtain",
+        "Colour": "Warm white"
+      }
+    },
+    {
+      "sku": "RB-CUR-05",
+      "category": "CUR",
+      "name": "Wish Ball LED Curtain",
+      "rate": "220",
+      "packing": "25 pcs / carton",
+      "specs": {
+        "Length": "3 metre",
+        "LED": "108 pixel LED (6+6)",
+        "Colour": "Tri-colour, RGB, Warm white"
+      }
+    },
+    {
+      "sku": "RB-CUR-06",
+      "category": "CUR",
+      "name": "Pixel Star Curtain Light",
+      "rate": "150",
+      "packing": "40 pcs / carton",
+      "specs": {
+        "Length": "6 feet",
+        "LED": "108 pixel LED (6+6)",
+        "Colour": "Warm white / Multi"
+      }
+    },
+    {
+      "sku": "RB-CUR-07",
+      "category": "CUR",
+      "name": "V Star Curtain Light",
+      "rate": "220",
+      "packing": "50 pcs / carton",
+      "specs": {
+        "Length": "6 feet",
+        "LED": "138 pixel LED (8+8)",
+        "Colour": "Warm white"
+      }
+    },
+    {
+      "sku": "RB-CUR-08",
+      "category": "CUR",
+      "name": "6+6 Diya Curtain",
+      "rate": "170",
+      "packing": "50 pcs / carton",
+      "specs": {
+        "Length": "3 metre",
+        "LED": "6+6 curtain",
+        "Colour": "Warm white"
+      }
+    },
+    {
+      "sku": "RB-CUR-09",
+      "category": "CUR",
+      "name": "USB Fairy Curtain",
+      "rate": "150",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Size": "10 × 10 feet",
+        "LED": "240 LED",
+        "Colour": "Warm white"
+      }
+    },
+    {
+      "sku": "RB-CUR-10",
+      "category": "CUR",
+      "name": "Green Leaf Curtain",
+      "rate": "135",
+      "packing": "50 pcs / carton",
+      "specs": {
+        "Length": "3 metre",
+        "LED": "SMD waterproof",
+        "Colour": "Warm white"
+      }
+    },
+    {
+      "sku": "RB-CUR-11",
+      "category": "CUR",
+      "name": "Rain Drop Light",
+      "rate": "185",
+      "packing": "50 pcs / carton",
+      "specs": {
+        "Length": "3 metre",
+        "Size": "8 sticks / 50 cm",
+        "Colour": "Warm white / Multi"
+      }
+    },
+    {
+      "sku": "RB-CUR-12",
+      "category": "CUR",
+      "name": "Ring Diya Light",
+      "rate": "135",
+      "packing": "50 pcs / carton",
+      "specs": {
+        "Size": "26 × 32 cm",
+        "LED": "SMD waterproof",
+        "Colour": "Warm white"
+      }
+    },
+    {
+      "sku": "RB-CUR-13",
+      "category": "CUR",
+      "name": "Ring Star Light",
+      "rate": "135",
+      "packing": "50 pcs / carton",
+      "specs": {
+        "Size": "26 × 32 cm",
+        "LED": "SMD waterproof",
+        "Colour": "Warm white"
+      }
+    },
+    {
+      "sku": "RB-LMP-01",
+      "category": "LMP",
+      "name": "Book Reading Light",
+      "rate": "150",
+      "packing": "200 pcs / carton",
+      "specs": {
+        "Power": "Rechargeable",
+        "Feature": "Button type",
+        "Colour": "White / Neutral white / Warm white"
+      }
+    },
+    {
+      "sku": "RB-LMP-02",
+      "category": "LMP",
+      "name": "Crystal Night Lamp — Milky Way",
+      "rate": "65",
+      "packing": "60 pcs / carton",
+      "specs": {
+        "Power": "USB",
+        "Colour": "Warm white",
+        "Base": "Wooden"
+      }
+    },
+    {
+      "sku": "RB-LMP-03",
+      "category": "LMP",
+      "name": "Crystal Night Lamp — Saturn",
+      "rate": "65",
+      "packing": "60 pcs / carton",
+      "specs": {
+        "Power": "USB",
+        "Colour": "Warm white",
+        "Base": "Wooden"
+      }
+    },
+    {
+      "sku": "RB-LMP-04",
+      "category": "LMP",
+      "name": "Panda Lamp",
+      "rate": "175",
+      "packing": "80 pcs / carton",
+      "specs": {
+        "Rechargeable": "Yes",
+        "Mode": "Touch",
+        "Colour": "Colour-changing"
+      }
+    },
+    {
+      "sku": "RB-LMP-05",
+      "category": "LMP",
+      "name": "Pear Lamp",
+      "rate": "210",
+      "packing": "80 pcs / carton",
+      "specs": {
+        "Rechargeable": "Yes",
+        "Mode": "Touch",
+        "Colour": "Colour-changing"
+      }
+    },
+    {
+      "sku": "RB-LMP-06",
+      "category": "LMP",
+      "name": "Rabbit Lamp",
+      "rate": "210",
+      "packing": "80 pcs / carton",
+      "specs": {
+        "Rechargeable": "Yes",
+        "Mode": "Touch",
+        "Colour": "Colour-changing"
+      }
+    },
+    {
+      "sku": "RB-LMP-07",
+      "category": "LMP",
+      "name": "Sleepy Panda Lamp",
+      "rate": "210",
+      "packing": "80 pcs / carton",
+      "specs": {
+        "Rechargeable": "Yes",
+        "Mode": "Touch",
+        "Colour": "Colour-changing"
+      }
+    },
+    {
+      "sku": "RB-LMP-08",
+      "category": "LMP",
+      "name": "Table Touch Lamp — Stardust",
+      "rate": "210",
+      "packing": "40 pcs / carton",
+      "specs": {
+        "Rechargeable": "Yes",
+        "Mode": "Touch",
+        "Colour": "Colour-changing"
+      }
+    },
+    {
+      "sku": "RB-LMP-09",
+      "category": "LMP",
+      "name": "Table Touch Lamp — Wave",
+      "rate": "210",
+      "packing": "40 pcs / carton",
+      "specs": {
+        "Rechargeable": "Yes",
+        "Mode": "Touch",
+        "Colour": "Colour-changing"
+      }
+    },
+    {
+      "sku": "RB-LMP-10",
+      "category": "LMP",
+      "name": "Table Touch Lamp — Golden Leaf",
+      "rate": "210",
+      "packing": "40 pcs / carton",
+      "specs": {
+        "Rechargeable": "Yes",
+        "Mode": "Touch",
+        "Colour": "Colour-changing"
+      }
+    },
+    {
+      "sku": "RB-LMP-11",
+      "category": "LMP",
+      "name": "Table Touch Lamp — Linea",
+      "rate": "210",
+      "packing": "40 pcs / carton",
+      "specs": {
+        "Rechargeable": "Yes",
+        "Mode": "Touch",
+        "Colour": "Colour-changing"
+      }
+    },
+    {
+      "sku": "RB-LMP-12",
+      "category": "LMP",
+      "name": "Table Touch Lamp — Crystal",
+      "rate": "210",
+      "packing": "40 pcs / carton",
+      "specs": {
+        "Rechargeable": "Yes",
+        "Mode": "Touch",
+        "Colour": "Colour-changing"
+      }
+    },
+    {
+      "sku": "RB-LMP-13",
+      "category": "LMP",
+      "name": "Table Touch Lamp — Golden Gate",
+      "rate": "210",
+      "packing": "40 pcs / carton",
+      "specs": {
+        "Rechargeable": "Yes",
+        "Mode": "Touch",
+        "Colour": "Colour-changing"
+      }
+    },
+    {
+      "sku": "RB-LMP-14",
+      "category": "LMP",
+      "name": "Dumple Lamp",
+      "rate": "220",
+      "packing": "40 pcs / carton",
+      "specs": {
+        "Rechargeable": "Yes",
+        "Mode": "Touch",
+        "Colour": "Colour-changing"
+      }
+    },
+    {
+      "sku": "RB-LMP-15",
+      "category": "LMP",
+      "name": "UFO Lamp",
+      "rate": "220",
+      "packing": "40 pcs / carton",
+      "specs": {
+        "Rechargeable": "Yes",
+        "Mode": "Touch",
+        "Colour": "Colour-changing"
+      }
+    },
+    {
+      "sku": "RB-LMP-16",
+      "category": "LMP",
+      "name": "Astronaut Projection Lamp",
+      "rate": "400",
+      "packing": "24 pcs / carton",
+      "specs": {
+        "Power": "USB operated",
+        "Mode": "Remote control",
+        "Colour": "Colour-changing"
+      }
+    },
+    {
+      "sku": "RB-CDL-01",
+      "category": "CDL",
+      "name": "LED Pillar Candle",
+      "rate": "80 / 85 / 90 / 95 / 100 / 105 / 110",
+      "rateNote": "by height",
+      "packing": "",
+      "specs": {
+        "Height": "4 / 5 / 6 / 7 / 8 / 9 / 10 inch",
+        "Diameter": "3 inch",
+        "Colour": "Warm white"
+      }
+    },
+    {
+      "sku": "RB-CDL-02",
+      "category": "CDL",
+      "name": "LED Fire Candle",
+      "rate": "100",
+      "packing": "120 pcs / carton",
+      "specs": {
+        "Size": "Dia 3 inch × height 6 inch",
+        "Effect": "Moving flame",
+        "Colour": "Warm white"
+      }
+    },
+    {
+      "sku": "RB-CDL-03",
+      "category": "CDL",
+      "name": "LED Taper Candle",
+      "rate": "65",
+      "packing": "120 pcs / carton",
+      "specs": {
+        "Size": "Dia 3 inch × height 6 inch",
+        "Effect": "Moving flame",
+        "Colour": "Warm white"
+      }
+    },
+    {
+      "sku": "RB-CDL-04",
+      "category": "CDL",
+      "name": "Glass Candle",
+      "rate": "15",
+      "packing": "480 pcs / carton",
+      "specs": {
+        "Power": "Battery operated",
+        "Colour": "Warm white",
+        "Body": "Moulded glass"
+      }
+    },
+    {
+      "sku": "RB-CDL-05",
+      "category": "CDL",
+      "name": "Flickering Candle — Set of 3 with Remote",
+      "rate": "320",
+      "rateNote": "per set",
+      "packing": "120 sets / carton",
+      "specs": {
+        "Set": "3 pieces + remote",
+        "Colour": "Warm white",
+        "Power": "Battery operated"
+      }
+    },
+    {
+      "sku": "RB-CDL-06",
+      "category": "CDL",
+      "name": "Flickering Candle — Set of 3",
+      "rate": "230",
+      "rateNote": "per set",
+      "packing": "120 sets / carton",
+      "specs": {
+        "Set": "3 pieces",
+        "Colour": "Warm white",
+        "Power": "Battery operated"
+      }
+    },
+    {
+      "sku": "RB-CDL-07",
+      "category": "CDL",
+      "name": "Crystal Candle",
+      "rate": "11",
+      "packing": "480 pcs / carton",
+      "specs": {
+        "Power": "Battery operated",
+        "Colour": "Warm white",
+        "Inner pack": "24 pcs"
+      }
+    },
+    {
+      "sku": "RB-CDL-08",
+      "category": "CDL",
+      "name": "Frosted Candle",
+      "rate": "11",
+      "packing": "480 pcs / carton",
+      "specs": {
+        "Power": "Battery operated",
+        "Colour": "Warm white",
+        "Finish": "Frosted"
+      }
+    },
+    {
+      "sku": "RB-CDL-09",
+      "category": "CDL",
+      "name": "Tea Light Candle",
+      "rate": "8",
+      "packing": "480 pcs / carton",
+      "specs": {
+        "Power": "Battery operated",
+        "Colour": "Warm white",
+        "Finish": "Plain"
+      }
+    },
+    {
+      "sku": "RB-CDL-10",
+      "category": "CDL",
+      "name": "Gear Candle",
+      "rate": "35",
+      "packing": "480 pcs / carton",
+      "specs": {
+        "Power": "Battery operated",
+        "Colour": "Warm white",
+        "Finish": "Cut-glass gear"
+      }
+    },
+    {
+      "sku": "RB-CDL-11",
+      "category": "CDL",
+      "name": "Sensor Glow Diya",
+      "rate": "35",
+      "packing": "480 pcs / carton",
+      "specs": {
+        "Power": "Battery operated",
+        "Colour": "Warm white",
+        "Feature": "Sensor glow"
+      }
+    },
+    {
+      "sku": "RB-CDL-12",
+      "category": "CDL",
+      "name": "Artistic Candle",
+      "rate": "100",
+      "packing": "240 pcs / carton",
+      "specs": {
+        "Power": "Button cell",
+        "Colour": "Silver / Rose gold",
+        "Style": "Lamp-shade form"
+      }
+    },
+    {
+      "sku": "RB-CDL-13",
+      "category": "CDL",
+      "name": "Water Sensor Diya",
+      "rate": "4.50 / 5.50",
+      "rateNote": "small / big",
+      "packing": "300 pcs / carton",
+      "specs": {
+        "Feature": "Water sensor activated",
+        "Colour": "Brown",
+        "Sizes": "Small / Big"
+      }
+    },
+    {
+      "sku": "RB-CDL-14",
+      "category": "CDL",
+      "name": "Floating Flower Candle",
+      "rate": "35",
+      "packing": "360 pcs / carton",
+      "specs": {
+        "Feature": "Water sensor activated",
+        "Colour": "6-colour flower pack",
+        "Use": "Floating"
+      }
+    },
+    {
+      "sku": "RB-STR-01",
+      "category": "STR",
+      "name": "Jai Mala String",
+      "rate": "210",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Length": "4 metre",
+        "Colour": "Warm white",
+        "Power": "Plug-in"
+      }
+    },
+    {
+      "sku": "RB-STR-02",
+      "category": "STR",
+      "name": "Rose Light String",
+      "rate": "90",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Length": "4 metre",
+        "Colour": "White & Pink",
+        "Power": "Plug-in"
+      }
+    },
+    {
+      "sku": "RB-STR-03",
+      "category": "STR",
+      "name": "Pineapple String Light",
+      "rate": "30",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Length": "4 metre",
+        "Colour": "Warm white",
+        "Power": "Battery"
+      }
+    },
+    {
+      "sku": "RB-STR-04",
+      "category": "STR",
+      "name": "Diya String Light",
+      "rate": "55",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Length": "4 metre",
+        "LED": "14 LED",
+        "Colour": "Warm white"
+      }
+    },
+    {
+      "sku": "RB-STR-05",
+      "category": "STR",
+      "name": "Star Crackle Light",
+      "rate": "115",
+      "packing": "50 pcs / carton",
+      "specs": {
+        "Length": "4 metre",
+        "LED": "14 pixel LED",
+        "Colour": "Multi colour"
+      }
+    },
+    {
+      "sku": "RB-STR-06",
+      "category": "STR",
+      "name": "Heart Crackle Light",
+      "rate": "115",
+      "packing": "50 pcs / carton",
+      "specs": {
+        "Length": "4 metre",
+        "LED": "14 pixel LED",
+        "Colour": "Multi colour"
+      }
+    },
+    {
+      "sku": "RB-STR-07",
+      "category": "STR",
+      "name": "Ball Crackle Light",
+      "rate": "115",
+      "packing": "50 pcs / carton",
+      "specs": {
+        "Length": "4 metre",
+        "LED": "14 pixel LED",
+        "Colour": "Multi colour"
+      }
+    },
+    {
+      "sku": "RB-STR-08",
+      "category": "STR",
+      "name": "Double Ball Light",
+      "rate": "40",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Length": "4 metre",
+        "LED": "10 LED",
+        "Colour": "Warm white / Multi"
+      }
+    },
+    {
+      "sku": "RB-STR-09",
+      "category": "STR",
+      "name": "Heart String Light",
+      "rate": "30",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Length": "4 metre",
+        "LED": "10 LED",
+        "Colour": "Warm white"
+      }
+    },
+    {
+      "sku": "RB-STR-10",
+      "category": "STR",
+      "name": "Christmas Tree String",
+      "rate": "30",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Length": "3 metre",
+        "LED": "10 LED",
+        "Colour": "RGB"
+      }
+    },
+    {
+      "sku": "RB-STR-11",
+      "category": "STR",
+      "name": "Star Light String",
+      "rate": "55",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Length": "4 metre",
+        "LED": "14 LED",
+        "Colour": "Warm white"
+      }
+    },
+    {
+      "sku": "RB-STR-12",
+      "category": "STR",
+      "name": "Photo Clip String",
+      "rate": "70",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Length": "4 metre",
+        "LED": "14 LED",
+        "Colour": "Warm white"
+      }
+    },
+    {
+      "sku": "RB-STR-13",
+      "category": "STR",
+      "name": "Butterfly String Light",
+      "rate": "70",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Length": "4 metre",
+        "LED": "14 LED",
+        "Colour": "Warm white / Multi"
+      }
+    },
+    {
+      "sku": "RB-STR-14",
+      "category": "STR",
+      "name": "Lemon Light String",
+      "rate": "40",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Length": "4 metre",
+        "LED": "10 LED",
+        "Colour": "Warm white"
+      }
+    },
+    {
+      "sku": "RB-STR-15",
+      "category": "STR",
+      "name": "Crystal Ball Light",
+      "rate": "55",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Length": "4 metre",
+        "LED": "14 pixel LED",
+        "Colour": "Warm white / Multi"
+      }
+    },
+    {
+      "sku": "RB-STR-16",
+      "category": "STR",
+      "name": "Gel Drop Light",
+      "rate": "55",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Length": "4 metre",
+        "LED": "14 pixel LED",
+        "Colour": "Warm white / Multi"
+      }
+    },
+    {
+      "sku": "RB-STR-17",
+      "category": "STR",
+      "name": "Metal String Light — 5 Shapes",
+      "rate": "70",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Length": "4 metre",
+        "LED": "10 LED",
+        "Colour": "Warm white",
+        "Shapes": "Star, Leaf, Peanut, Diamond, Football"
+      }
+    },
+    {
+      "sku": "RB-STR-18",
+      "category": "STR",
+      "name": "Metal String Light — Moroccan Ball",
+      "rate": "65 / 85",
+      "rateNote": "10 LED / 14 LED",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Length": "4 metre",
+        "LED": "10 / 14 LED",
+        "Colour": "Warm white",
+        "Shape": "Metal Moroccan ball"
+      }
+    },
+    {
+      "sku": "RB-STR-19",
+      "category": "STR",
+      "name": "Cork Fairy Light",
+      "rate": "11",
+      "packing": "1000 pcs / carton",
+      "specs": {
+        "Length": "2 metre",
+        "LED": "20 LED",
+        "Colour": "Warm white",
+        "Fitting": "Bottle cork"
+      }
+    },
+    {
+      "sku": "RB-STR-20",
+      "category": "STR",
+      "name": "Milky Ball String Light",
+      "rate": "50",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Length": "4 metre",
+        "LED": "14 LED",
+        "Colour": "Warm white / Multi"
+      }
+    },
+    {
+      "sku": "RB-STR-21",
+      "category": "STR",
+      "name": "Cloud String Light",
+      "rate": "100",
+      "packing": "50 pcs / carton",
+      "specs": {
+        "Length": "4 metre",
+        "LED": "10 LED",
+        "Colour": "Warm white"
+      }
+    },
+    {
+      "sku": "RB-STR-22",
+      "category": "STR",
+      "name": "Star Smiley String",
+      "rate": "100",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Length": "4 metre",
+        "LED": "10 LED",
+        "Colour": "Warm white"
+      }
+    },
+    {
+      "sku": "RB-STR-23",
+      "category": "STR",
+      "name": "Maple Leaf String",
+      "rate": "75",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Length": "4 metre",
+        "LED": "14 LED",
+        "Colour": "Warm white"
+      }
+    },
+    {
+      "sku": "RB-STR-24",
+      "category": "STR",
+      "name": "Lantern String Light",
+      "rate": "100",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Length": "4 metre",
+        "LED": "14 LED",
+        "Colour": "Warm white"
+      }
+    },
+    {
+      "sku": "RB-STR-25",
+      "category": "STR",
+      "name": "Silicon Flower String",
+      "rate": "40",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Length": "4 metre",
+        "LED": "14 LED",
+        "Colour": "Warm white / Multi / Pink / Green / Amber"
+      }
+    },
+    {
+      "sku": "RB-STR-26",
+      "category": "STR",
+      "name": "Lotus Flower String",
+      "rate": "55",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Length": "4 metre",
+        "LED": "14 LED",
+        "Colour": "Warm white / Multi"
+      }
+    },
+    {
+      "sku": "RB-STR-27",
+      "category": "STR",
+      "name": "Crystal Gel Rose String",
+      "rate": "60",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Length": "4 metre",
+        "LED": "14 pixel LED",
+        "Colour": "Tri-colour RGB"
+      }
+    },
+    {
+      "sku": "RB-STR-28",
+      "category": "STR",
+      "name": "Sparkle Ball String",
+      "rate": "140",
+      "packing": "50 pcs / carton",
+      "specs": {
+        "Length": "4 metre",
+        "LED": "14 pixel LED",
+        "Colour": "Tri-colour RGB"
+      }
+    },
+    {
+      "sku": "RB-STR-29",
+      "category": "STR",
+      "name": "Crystal Gel Star String",
+      "rate": "60",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Length": "4 metre",
+        "LED": "14 pixel LED",
+        "Colour": "Warm white / Tri-colour RGB"
+      }
+    },
+    {
+      "sku": "RB-STR-30",
+      "category": "STR",
+      "name": "Sparkle Star String",
+      "rate": "140",
+      "packing": "50 pcs / carton",
+      "specs": {
+        "Length": "4 metre",
+        "LED": "14 pixel LED",
+        "Colour": "Tri-colour RGB"
+      }
+    },
+    {
+      "sku": "RB-RPE-01",
+      "category": "RPE",
+      "name": "Direct Strip Light 2835",
+      "rate": "420",
+      "rateNote": "per roll",
+      "packing": "100 rolls / carton",
+      "specs": {
+        "Length": "10 metre roll",
+        "LED": "2835 / 120 LED",
+        "Colour": "Warm white"
+      }
+    },
+    {
+      "sku": "RB-RPE-02",
+      "category": "RPE",
+      "name": "Rope Light — 8 Metre",
+      "rate": "140",
+      "packing": "40 pcs / carton",
+      "specs": {
+        "Length": "8 metre",
+        "LED": "2835 / 120 LED",
+        "Colour": "Warm white"
+      }
+    },
+    {
+      "sku": "RB-RPE-03",
+      "category": "RPE",
+      "name": "Rope Light — 45 Metre Roll",
+      "rate": "750",
+      "rateNote": "per roll",
+      "packing": "",
+      "specs": {
+        "Length": "45 metre roll",
+        "LED": "2835 / 120 LED",
+        "Colour": "Warm white"
+      }
+    },
+    {
+      "sku": "RB-RPE-04",
+      "category": "RPE",
+      "name": "Neon Strip Light",
+      "rate": "135",
+      "packing": "60 pcs / carton",
+      "specs": {
+        "Length": "5 metre",
+        "LED": "2835 / 120 LED",
+        "Colour": "Warm white / single colours"
+      }
+    },
+    {
+      "sku": "RB-RPE-05",
+      "category": "RPE",
+      "name": "2835 Running Rope",
+      "rate": "120",
+      "packing": "40 pcs / carton",
+      "specs": {
+        "Length": "8 metre",
+        "LED": "2835 / 48 LED",
+        "Colour": "Running multi colour"
+      }
+    },
+    {
+      "sku": "RB-RPE-06",
+      "category": "RPE",
+      "name": "5050 RGB Rope",
+      "rate": "145",
+      "packing": "40 pcs / carton",
+      "specs": {
+        "Length": "8 metre",
+        "LED": "60 LED per metre",
+        "Colour": "RGB"
+      }
+    },
+    {
+      "sku": "RB-RPE-07",
+      "category": "RPE",
+      "name": "F-COB 288 LED Neon",
+      "rate": "2,000",
+      "rateNote": "per roll",
+      "packing": "5 rolls / carton",
+      "specs": {
+        "Length": "40 metre roll",
+        "LED": "288 LED per metre",
+        "Colour": "Warm white / Blue / Green"
+      }
+    },
+    {
+      "sku": "RB-RPE-08",
+      "category": "RPE",
+      "name": "Magic Neon with Remote",
+      "rate": "390",
+      "packing": "40 pcs / carton",
+      "specs": {
+        "Length": "5 metre",
+        "Control": "Remote / mobile app",
+        "Colour": "Running multi colour"
+      }
+    },
+    {
+      "sku": "RB-RPE-09",
+      "category": "RPE",
+      "name": "Magic Rassi Neon with Remote",
+      "rate": "750",
+      "packing": "40 pcs / carton",
+      "specs": {
+        "Length": "5 metre",
+        "Control": "Remote / mobile app",
+        "Colour": "Running multi colour"
+      }
+    },
+    {
+      "sku": "RB-PXL-01",
+      "category": "PXL",
+      "name": "LED Tree Light",
+      "rate": "320",
+      "packing": "50 pcs / carton",
+      "specs": {
+        "LED": "Pixel LED",
+        "Colour": "Warm white / RGB",
+        "Use": "Indoor & outdoor"
+      }
+    },
+    {
+      "sku": "RB-PXL-02",
+      "category": "PXL",
+      "name": "Waterfall Net — 8 mm Pixel",
+      "rate": "235",
+      "packing": "30 pcs / carton",
+      "specs": {
+        "Size": "10 × 10 feet",
+        "LED": "8 mm pixel LED",
+        "Colour": "Multi"
+      }
+    },
+    {
+      "sku": "RB-PXL-03",
+      "category": "PXL",
+      "name": "8 mm Pixel String — 15 Metre",
+      "rate": "32",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Length": "15 metre",
+        "LED": "36 pixel LED",
+        "Colour": "White / Warm white / Red / Green / Pink"
+      }
+    },
+    {
+      "sku": "RB-PXL-04",
+      "category": "PXL",
+      "name": "16 mm Waterproof Pixel LED",
+      "rate": "48",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Length": "15 metre",
+        "LED": "36 pixel LED",
+        "Colour": "White / Warm white / Red / Green / Pink / Blue"
+      }
+    },
+    {
+      "sku": "RB-PXL-05",
+      "category": "PXL",
+      "name": "8 mm Pixel String — 15 / 25 / 35 Metre",
+      "rate": "34 / 45 / 65",
+      "rateNote": "by length",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Length": "15 / 25 / 35 metre",
+        "LED": "34 / 48 / 70 pixel LED",
+        "Colour": "White / Warm white / Red / Green / Pink / Blue"
+      }
+    },
+    {
+      "sku": "RB-FLD-01",
+      "category": "FLD",
+      "name": "LED Flood Light",
+      "rate": "450 / 700 / 1,250 / 2,500",
+      "rateNote": "by wattage",
+      "packing": "20 / 20 / 10 / 5 pcs / carton",
+      "specs": {
+        "Wattage": "50 / 100 / 200 / 400 W",
+        "LED": "DOB base",
+        "Colour": "White / Warm white",
+        "Warranty": "1 year"
+      }
+    },
+    {
+      "sku": "RB-FLD-02",
+      "category": "FLD",
+      "name": "LED Lens Flood Light",
+      "rate": "300 / 600",
+      "rateNote": "by wattage",
+      "packing": "10 pcs / carton",
+      "specs": {
+        "Wattage": "150 / 300 W",
+        "Optic": "Lens",
+        "Colour": "White / Warm white"
+      }
+    },
+    {
+      "sku": "RB-FLD-03",
+      "category": "FLD",
+      "name": "Crystal Flood Light",
+      "rate": "350",
+      "packing": "10 pcs / carton",
+      "specs": {
+        "Wattage": "150 W",
+        "Optic": "Crystal lens",
+        "Colour": "White"
+      }
+    },
+    {
+      "sku": "RB-FLD-04",
+      "category": "FLD",
+      "name": "LED Track Light",
+      "rate": "400 / 500",
+      "rateNote": "by wattage",
+      "packing": "50 / 40 pcs / carton",
+      "specs": {
+        "Wattage": "20 / 30 W",
+        "Colour mode": "3-in-1 CCT",
+        "Colour": "White / Warm white"
+      }
+    },
+    {
+      "sku": "RB-FLD-05",
+      "category": "FLD",
+      "name": "Cabinet Light — Lens",
+      "rate": "150 / 170",
+      "rateNote": "by size",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Size": "30 cm / 40 cm",
+        "Model": "Lens",
+        "Colour mode": "3-in-1 CCT"
+      }
+    },
+    {
+      "sku": "RB-FLD-06",
+      "category": "FLD",
+      "name": "Cabinet Light — Diffuser",
+      "rate": "200 / 230",
+      "rateNote": "by size",
+      "packing": "100 pcs / carton",
+      "specs": {
+        "Size": "30 cm / 40 cm",
+        "Model": "Diffuser",
+        "Colour mode": "3-in-1 CCT"
+      }
+    },
+    {
+      "sku": "RB-ACC-01",
+      "category": "ACC",
+      "name": "Raybrite Copper Wire",
+      "rate": "650 / 850 / 1,280 / 2,100",
+      "rateNote": "by gauge",
+      "packing": "10 pcs / carton",
+      "specs": {
+        "Length": "90 metre",
+        "Gauge": "0.75 / 1.0 / 1.5 / 2.5 mm",
+        "Conductor": "Copper"
+      }
+    },
+    {
+      "sku": "RB-ACC-02",
+      "category": "ACC",
+      "name": "Extension Cord",
+      "rate": "220",
+      "packing": "80 pcs / carton",
+      "specs": {
+        "Length": "3 metre",
+        "Quality": "Best rating",
+        "Colour": "White"
+      }
+    },
+    {
+      "sku": "RB-ACC-03",
+      "category": "ACC",
+      "name": "USB Rechargeable Hand Fan",
+      "rate": "65",
+      "packing": "144 pcs / carton",
+      "specs": {
+        "Power": "USB operated",
+        "Rechargeable": "Yes",
+        "Colour": "4 colours"
+      }
+    },
+    {
+      "sku": "RB-ACC-04",
+      "category": "ACC",
+      "name": "Hand Pressed Fan",
+      "rate": "30",
+      "packing": "320 pcs / carton",
+      "specs": {
+        "Power": "Hand operated",
+        "Rechargeable": "No",
+        "Colour": "Pink"
+      }
+    }
+  ]
+}

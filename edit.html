@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Raybrite — Catalogue editor</title>
+<style>
+  :root{
+    --paper:#F5F1E8; --panel:#FFFFFF; --sunk:#FAF7F0;
+    --line:#E3DCCE; --line-hard:#CFC4B0;
+    --ink:#14110E; --body:#3D362E; --muted:#6E655B; --faint:#988D80;
+    --amber:#C6871F; --amber-soft:#FBF1DC; --amber-line:#EAD5A8;
+    --danger:#A03323; --danger-soft:#FBEDEA;
+    --ok:#2F6F4F; --ok-soft:#E9F3ED;
+    --r:10px; --maxw:880px;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--paper); color:var(--body);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased; overflow-x:hidden}
+  button{font:inherit; color:inherit; background:none; border:none; cursor:pointer}
+  input,select,textarea{font:inherit; color:var(--ink)}
+  :focus-visible{outline:2px solid var(--amber); outline-offset:2px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 16px}
+  .mono{font-family:var(--mono)}
+
+  /* ---------- header ---------- */
+  header{position:sticky; top:0; z-index:30; background:rgba(245,241,232,.92);
+    backdrop-filter:saturate(140%) blur(8px); border-bottom:1px solid var(--line);
+    padding-top:env(safe-area-inset-top)}
+  .hbar{display:flex; align-items:center; gap:12px; height:58px; max-width:var(--maxw); margin:0 auto; padding:0 16px}
+  .hbar .mark{font-family:Georgia,serif; font-weight:700; font-size:17px; color:var(--ink); letter-spacing:-.2px}
+  .hbar .mark span{color:var(--amber)}
+  .hbar .sub{font-size:11px; letter-spacing:1.6px; text-transform:uppercase; color:var(--faint)}
+  .hbar .sp{flex:1}
+  .dot{display:none; align-items:center; gap:6px; font-size:12px; color:var(--amber); font-weight:600}
+  .dot::before{content:""; width:7px; height:7px; border-radius:50%; background:var(--amber)}
+  body.dirty .dot{display:inline-flex}
+
+  .tabs{display:flex; gap:2px; max-width:var(--maxw); margin:0 auto; padding:0 10px; overflow-x:auto}
+  .tabs::-webkit-scrollbar{display:none}
+  .tabs button{padding:9px 12px 11px; font-size:14px; color:var(--muted); font-weight:500;
+    border-bottom:2px solid transparent; white-space:nowrap}
+  .tabs button[aria-selected="true"]{color:var(--ink); font-weight:700; border-bottom-color:var(--amber)}
+  .tabs .count{font-family:var(--mono); font-size:11px; color:var(--faint); margin-left:5px}
+
+  main{padding:20px 0 90px}
+  section[hidden]{display:none}
+  h2.title{font-family:Georgia,serif; font-size:22px; color:var(--ink); margin:0 0 4px; font-weight:700}
+  p.lede{color:var(--muted); font-size:14px; margin:0 0 18px; max-width:60ch}
+
+  /* ---------- controls ---------- */
+  .btn{display:inline-flex; align-items:center; justify-content:center; gap:7px; min-height:42px;
+    padding:0 15px; border-radius:var(--r); background:var(--panel); border:1px solid var(--line-hard);
+    font-size:14px; font-weight:600; color:var(--ink)}
+  .btn:hover{border-color:var(--ink)}
+  .btn.primary{background:var(--ink); border-color:var(--ink); color:var(--paper)}
+  .btn.primary:hover{background:#000}
+  .btn.danger{color:var(--danger); border-color:#E4C6C0}
+  .btn.danger:hover{background:var(--danger-soft); border-color:var(--danger)}
+  .btn.sm{min-height:34px; padding:0 11px; font-size:13px; border-radius:8px}
+  .btn:disabled{opacity:.45; cursor:not-allowed}
+  .btn svg{width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round}
+
+  .field{display:block; margin-bottom:13px}
+  .field > span{display:block; font-size:11px; letter-spacing:.9px; text-transform:uppercase;
+    color:var(--faint); font-weight:700; margin-bottom:5px}
+  .in{width:100%; min-height:42px; padding:9px 12px; background:var(--sunk);
+    border:1px solid var(--line-hard); border-radius:9px; outline:none}
+  .in:focus{border-color:var(--amber); background:var(--panel)}
+  textarea.in{min-height:66px; resize:vertical; line-height:1.45}
+  select.in{appearance:none; background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236E655B' stroke-width='2.2' stroke-linecap='round'><path d='M6 9l6 6 6-6'/></svg>");
+    background-repeat:no-repeat; background-position:right 11px center; background-size:16px; padding-right:36px}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:0 12px}
+  @media(max-width:520px){ .grid2{grid-template-columns:1fr} }
+
+  /* ---------- toolbar ---------- */
+  .toolbar{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:16px}
+  .toolbar .search{flex:1 1 200px; min-width:0; position:relative}
+  .toolbar .search input{padding-left:36px}
+  .toolbar .search svg{position:absolute; left:12px; top:50%; transform:translateY(-50%);
+    width:16px; height:16px; stroke:var(--faint); fill:none; stroke-width:2}
+  .toolbar select{flex:0 1 190px}
+
+  /* ---------- product rows ---------- */
+  .rows{display:flex; flex-direction:column; gap:8px}
+  .row{background:var(--panel); border:1px solid var(--line); border-radius:var(--r); overflow:hidden}
+  .row.open{border-color:var(--ink); box-shadow:0 2px 14px rgba(20,17,14,.07)}
+  .rhead{display:flex; gap:12px; align-items:center; width:100%; text-align:left; padding:9px 12px}
+  .rhead .thumb{width:52px; height:52px; flex:none; border-radius:8px; background:var(--sunk);
+    border:1px solid var(--line); overflow:hidden; display:grid; place-items:center}
+  .rhead .thumb img{width:100%; height:100%; object-fit:cover}
+  .rhead .thumb i{font-family:var(--mono); font-size:9px; color:var(--faint); font-style:normal; letter-spacing:.5px}
+  .rhead .meta{flex:1; min-width:0}
+  .rhead .nm{font-weight:600; color:var(--ink); line-height:1.3; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .rhead .ln{display:flex; gap:8px; align-items:center; margin-top:3px; flex-wrap:wrap}
+  .rhead .sku{font-family:var(--mono); font-size:11.5px; color:var(--muted)}
+  .rhead .rate{font-size:12.5px; font-weight:700; color:var(--amber)}
+  .rhead .pill{font-size:10.5px; text-transform:uppercase; letter-spacing:.5px; color:var(--faint)}
+  .rhead .warn{font-size:10.5px; font-weight:700; color:var(--danger)}
+  .rhead .caret{flex:none; width:18px; height:18px; stroke:var(--faint); fill:none; stroke-width:2.2;
+    stroke-linecap:round; transition:transform .18s ease}
+  .row.open .rhead .caret{transform:rotate(90deg)}
+  .rbody{padding:4px 14px 16px; border-top:1px solid var(--line)}
+
+  .sub{font-size:11px; letter-spacing:.9px; text-transform:uppercase; color:var(--faint);
+    font-weight:700; margin:16px 0 8px}
+  .specrow{display:flex; gap:8px; margin-bottom:7px}
+  .specrow .k{flex:0 0 34%}
+  .specrow .v{flex:1; min-width:0}
+  .specrow .x{flex:none; width:36px; border-radius:8px; border:1px solid var(--line-hard);
+    background:var(--panel); color:var(--faint); font-size:17px; line-height:1}
+  .specrow .x:hover{color:var(--danger); border-color:var(--danger)}
+
+  .shots{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px}
+  .shot{position:relative; width:78px; height:78px; border-radius:9px; overflow:hidden;
+    border:1px solid var(--line-hard); background:var(--sunk)}
+  .shot img{width:100%; height:100%; object-fit:cover}
+  .shot .miss{display:grid; place-items:center; height:100%; padding:4px; text-align:center;
+    font-family:var(--mono); font-size:8.5px; color:var(--faint); word-break:break-all; line-height:1.25}
+  .shot .kill{position:absolute; top:3px; right:3px; width:20px; height:20px; border-radius:50%;
+    background:rgba(20,17,14,.72); color:#fff; font-size:12px; line-height:20px; text-align:center}
+  .shot .kill:hover{background:var(--danger)}
+  .shot .cover{position:absolute; left:0; right:0; bottom:0; background:rgba(20,17,14,.72);
+    color:#fff; font-size:9px; text-align:center; padding:2px 0; letter-spacing:.5px; text-transform:uppercase}
+  .shot.first .cover{background:var(--amber); color:var(--ink); font-weight:700}
+  .rowacts{display:flex; gap:8px; flex-wrap:wrap; margin-top:18px; padding-top:14px; border-top:1px solid var(--line)}
+  .rowacts .sp{flex:1}
+
+  /* ---------- notes & banners ---------- */
+  .note{border-radius:var(--r); padding:12px 14px; font-size:13.5px; line-height:1.5; margin-bottom:14px}
+  .note.info{background:var(--amber-soft); border:1px solid var(--amber-line); color:#6B4A0E}
+  .note.bad{background:var(--danger-soft); border:1px solid #E4C6C0; color:#78241A}
+  .note.good{background:var(--ok-soft); border:1px solid #C3DCCE; color:#1E5137}
+  .note b{font-weight:700}
+  .note ul{margin:7px 0 0; padding-left:18px}
+  .note li{margin:3px 0}
+  .note code{font-family:var(--mono); font-size:12.5px; background:rgba(0,0,0,.05); padding:1px 5px; border-radius:4px}
+
+  .empty{text-align:center; color:var(--faint); padding:44px 16px; font-size:14px;
+    background:var(--panel); border:1px dashed var(--line-hard); border-radius:var(--r)}
+
+  /* ---------- photo tab ---------- */
+  .drop{border:2px dashed var(--line-hard); border-radius:16px; background:var(--panel);
+    padding:34px 20px; text-align:center; transition:background .15s ease, border-color .15s ease}
+  .drop.hot{border-color:var(--amber); background:var(--amber-soft)}
+  .drop svg{width:34px; height:34px; stroke:var(--faint); fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round}
+  .drop h3{margin:12px 0 4px; font-size:17px; color:var(--ink)}
+  .drop p{margin:0 0 16px; font-size:13.5px; color:var(--muted)}
+  .drop .or{font-size:12px; color:var(--faint); margin-top:10px}
+
+  .opts{display:flex; gap:8px; flex-wrap:wrap; margin:16px 0}
+  .chip{padding:9px 13px; border-radius:99px; border:1px solid var(--line-hard);
+    background:var(--panel); font-size:13px; font-weight:600; color:var(--muted)}
+  .chip[aria-pressed="true"]{background:var(--ink); border-color:var(--ink); color:var(--paper)}
+  .chip small{display:block; font-size:10.5px; font-weight:500; opacity:.8; margin-top:1px}
+
+  .bar-outer{height:7px; background:var(--line); border-radius:99px; overflow:hidden; margin:12px 0 6px}
+  .bar-in2{height:100%; width:0; background:var(--amber); transition:width .2s ease}
+
+  .meter{background:var(--panel); border:1px solid var(--line); border-radius:var(--r); padding:14px}
+  .meter .n{font-family:var(--mono); font-size:24px; font-weight:700; color:var(--ink); line-height:1}
+  .meter .lbl{font-size:11px; letter-spacing:.9px; text-transform:uppercase; color:var(--faint); font-weight:700; margin-top:5px}
+  .meterrow{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:16px}
+
+  /* ---------- publish ---------- */
+  .steps{counter-reset:s; list-style:none; padding:0; margin:0}
+  .steps li{counter-increment:s; position:relative; padding:0 0 18px 40px; border-left:1px solid var(--line); margin-left:12px}
+  .steps li:last-child{border-left-color:transparent; padding-bottom:0}
+  .steps li::before{content:counter(s); position:absolute; left:-13px; top:-2px; width:26px; height:26px;
+    border-radius:50%; background:var(--ink); color:var(--paper); font-size:12px; font-weight:700;
+    display:grid; place-items:center; font-family:var(--mono)}
+  .steps h4{margin:2px 0 4px; font-size:15px; color:var(--ink)}
+  .steps p{margin:0; font-size:13.5px; color:var(--muted)}
+  .dlrow{display:flex; gap:10px; flex-wrap:wrap; margin:6px 0 22px}
+
+  details.adv{margin-top:26px; border-top:1px solid var(--line); padding-top:16px}
+  details.adv summary{cursor:pointer; font-size:13px; color:var(--muted); font-weight:600}
+  details.adv textarea{width:100%; min-height:220px; font-family:var(--mono); font-size:12px;
+    margin-top:12px; padding:12px; border:1px solid var(--line-hard); border-radius:9px; background:var(--sunk)}
+
+  /* ---------- sticky save ---------- */
+  .dock{position:fixed; left:0; right:0; bottom:0; z-index:35; background:rgba(245,241,232,.95);
+    backdrop-filter:blur(8px); border-top:1px solid var(--line-hard);
+    padding:10px 16px calc(10px + env(safe-area-inset-bottom))}
+  .dock-in{max-width:var(--maxw); margin:0 auto; display:flex; align-items:center; gap:12px}
+  .dock .msg{flex:1; min-width:0; font-size:12.5px; color:var(--muted)}
+  .dock .msg b{color:var(--ink)}
+
+  .boot{max-width:520px; margin:60px auto; background:var(--panel); border:1px solid var(--line);
+    border-radius:16px; padding:28px 26px}
+  .boot h2{font-family:Georgia,serif; margin:0 0 8px; color:var(--ink)}
+  .boot p{font-size:14px; color:var(--muted)}
+  .boot label{display:block; margin-top:14px}
+
+  @media(prefers-reduced-motion:reduce){*{transition:none !important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hbar">
+    <span class="mark">RAY<span>/</span>BRITE</span>
+    <span class="sub">Editor</span>
+    <span class="sp"></span>
+    <span class="dot">Unsaved</span>
+  </div>
+  <nav class="tabs" id="tabs" role="tablist">
+    <button role="tab" data-tab="products" aria-selected="true">Products <span class="count" id="tcProd"></span></button>
+    <button role="tab" data-tab="cats" aria-selected="false">Categories <span class="count" id="tcCat"></span></button>
+    <button role="tab" data-tab="photos" aria-selected="false">Photos <span class="count" id="tcPic"></span></button>
+    <button role="tab" data-tab="publish" aria-selected="false">Publish</button>
+  </nav>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <div id="boot" class="boot" hidden>
+      <h2>Open your catalogue</h2>
+      <p id="bootWhy"></p>
+      <label class="field"><span>products.json</span>
+        <input class="in" type="file" id="fProd" accept=".json,application/json"></label>
+      <label class="field"><span>images.json — optional</span>
+        <input class="in" type="file" id="fImg" accept=".json,application/json"></label>
+    </div>
+
+    <div id="app" hidden>
+
+      <!-- PRODUCTS -->
+      <section id="tab-products">
+        <h2 class="title">Products</h2>
+        <p class="lede">Tap any product to edit it. Everything you change is held here until you download the files on the Publish tab.</p>
+        <div class="toolbar">
+          <span class="search">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input class="in" id="pq" type="search" placeholder="Search name, code or spec" autocomplete="off">
+          </span>
+          <select class="in" id="pcat"><option value="">All categories</option></select>
+          <button class="btn primary" id="addProd">
+            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Add
+          </button>
+        </div>
+        <div class="rows" id="prows"></div>
+      </section>
+
+      <!-- CATEGORIES -->
+      <section id="tab-cats" hidden>
+        <h2 class="title">Categories</h2>
+        <p class="lede">These are the sections buyers see on the home screen. The short code is what links a product to its section — changing it moves every product with it.</p>
+        <div class="rows" id="crows"></div>
+        <div style="margin-top:14px">
+          <button class="btn" id="addCat">
+            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Add category
+          </button>
+        </div>
+      </section>
+
+      <!-- PHOTOS -->
+      <section id="tab-photos" hidden>
+        <h2 class="title">Photos</h2>
+        <p class="lede">Drop your whole photo folder in and each picture is matched to its product by filename, shrunk for the web, and stored inside the catalogue file. No separate images folder to keep in sync.</p>
+
+        <div class="meterrow">
+          <div class="meter"><div class="n" id="mHave">0</div><div class="lbl">With photos</div></div>
+          <div class="meter"><div class="n" id="mNone">0</div><div class="lbl">Still empty</div></div>
+          <div class="meter"><div class="n" id="mSize">0 KB</div><div class="lbl">File size</div></div>
+        </div>
+
+        <div class="sub">Photo size</div>
+        <div class="opts" id="qOpts">
+          <button class="chip" data-q="small" aria-pressed="false">Small<small>520px · lightest</small></button>
+          <button class="chip" data-q="balanced" aria-pressed="true">Balanced<small>720px · recommended</small></button>
+          <button class="chip" data-q="sharp" aria-pressed="false">Sharp<small>1000px · heaviest</small></button>
+        </div>
+
+        <div class="sub">When a product already has photos</div>
+        <div class="opts" id="mOpts">
+          <button class="chip" data-m="replace" aria-pressed="true">Replace them</button>
+          <button class="chip" data-m="append" aria-pressed="false">Add to them</button>
+        </div>
+
+        <div class="drop" id="drop">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M7 10l5-5 5 5"/><path d="M12 5v13"/></svg>
+          <h3>Drop your photo folder here</h3>
+          <p>Files named like <code class="mono">RB-CUR-01_1.jpg</code> find their own product.</p>
+          <button class="btn primary" id="pickFolder">Choose folder</button>
+          <div class="or">or <button class="btn sm" id="pickFiles" style="vertical-align:middle">pick individual files</button></div>
+          <input type="file" id="inFolder" webkitdirectory directory multiple hidden>
+          <input type="file" id="inFiles" accept="image/*" multiple hidden>
+        </div>
+
+        <div id="prog" hidden>
+          <div class="bar-outer"><div class="bar-in2" id="progBar"></div></div>
+          <div style="font-size:13px; color:var(--muted)" id="progTxt"></div>
+        </div>
+        <div id="report"></div>
+
+        <div style="margin-top:22px; padding-top:16px; border-top:1px solid var(--line)">
+          <button class="btn danger sm" id="stripPics">Remove all embedded photos</button>
+        </div>
+      </section>
+
+      <!-- PUBLISH -->
+      <section id="tab-publish" hidden>
+        <h2 class="title">Publish</h2>
+        <p class="lede">Download the two data files, then drop them into your GitHub repository. The live site updates in about a minute.</p>
+        <div id="checks"></div>
+        <div class="dlrow">
+          <button class="btn primary" id="dlBoth">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+            Download both files
+          </button>
+          <button class="btn" id="dlProd">products.json</button>
+          <button class="btn" id="dlImg">images.json</button>
+        </div>
+        <ol class="steps">
+          <li><h4>Open your repository on GitHub</h4><p>Go to the repository that holds your catalogue, in the folder where <code class="mono">index.html</code> sits.</p></li>
+          <li><h4>Choose Add file, then Upload files</h4><p>Drag both downloaded files onto the page. Uploading a file that already exists simply replaces it.</p></li>
+          <li><h4>Commit changes</h4><p>Type a short note like "updated prices" and press the green Commit button.</p></li>
+          <li><h4>Wait about a minute</h4><p>GitHub Pages rebuilds the site. Refresh the catalogue and your changes are live.</p></li>
+        </ol>
+        <details class="adv">
+          <summary>Advanced — edit the raw data</summary>
+          <p style="font-size:13px; color:var(--muted); margin:10px 0 0">Only use this if you know JSON. Paste in a full file and press Load to replace everything currently open.</p>
+          <textarea id="rawBox" spellcheck="false"></textarea>
+          <div style="display:flex; gap:8px; flex-wrap:wrap">
+            <button class="btn sm" id="rawShow">Show current data</button>
+            <button class="btn sm danger" id="rawLoad">Load pasted data</button>
+          </div>
+          <div id="rawMsg"></div>
+        </details>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<div class="dock" id="dock" hidden>
+  <div class="dock-in">
+    <div class="msg" id="dockMsg"></div>
+    <a class="btn sm" href="index.html" target="_blank" rel="noopener">Preview</a>
+    <button class="btn primary sm" id="dockSave">Download files</button>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+var $ = function(id){ return document.getElementById(id); };
+var esc = function(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); };
+
+var QUALITY = {
+  small:    {edge:520,  q:0.62},
+  balanced: {edge:720,  q:0.70},
+  sharp:    {edge:1000, q:0.78}
+};
+
+var S = {
+  cats: [],        // {key,name,blurb}
+  products: [],    // {sku,category,name,rate,rateNote,packing,specs:[[k,v]]}
+  photos: {},      // sku -> [dataURL | filename | url]
+  quality: 'balanced',
+  mode: 'replace',
+  tab: 'products',
+  open: null,      // sku currently expanded
+  filter: '',
+  catFilter: '',
+  dirty: false
+};
+
+/* ---------------- boot ---------------- */
+
+Promise.all([
+  fetch('products.json',{cache:'no-store'}).then(function(r){ if(!r.ok) throw new Error('products.json '+r.status); return r.json(); }),
+  fetch('images.json',{cache:'no-store'}).then(function(r){ return r.ok ? r.json() : {}; }).catch(function(){ return {}; })
+]).then(function(res){
+  adopt(res[0], res[1]);
+  start();
+}).catch(function(err){
+  $('boot').hidden = false;
+  $('bootWhy').textContent = /Failed to fetch|NetworkError|Load failed/i.test(String(err.message))
+    ? 'Opening this page straight from your computer stops it reading the data files on its own. Choose them below, or upload everything to GitHub and open it from there.'
+    : 'Could not read the data automatically (' + err.message + '). Choose the files below.';
+});
+
+var pending = {p:null, i:null};
+$('fProd').addEventListener('change', function(e){ readJSON(e.target.files[0], function(d){ pending.p = d; tryStart(); }); });
+$('fImg').addEventListener('change',  function(e){ readJSON(e.target.files[0], function(d){ pending.i = d; tryStart(); }); });
+function readJSON(file, done){
+  if(!file) return;
+  var fr = new FileReader();
+  fr.onload = function(){
+    try { done(JSON.parse(fr.result)); }
+    catch(e){ alert('That file is not readable JSON.\n\n' + e.message); }
+  };
+  fr.readAsText(file);
+}
+function tryStart(){
+  if(!pending.p) return;
+  adopt(pending.p, pending.i || {});
+  $('boot').hidden = true;
+  start();
+}
+
+// Bring a loaded file into working shape. Specs become an ordered list of
+// pairs while editing so two rows can share a name without fighting.
+function adopt(prod, imgs){
+  S.cats = (prod.categories||[]).map(function(c){
+    return { key:String(c.key||''), name:String(c.name||c.key||''), blurb:String(c.blurb||'') };
+  });
+  S.photos = (imgs && typeof imgs==='object') ? imgs : {};
+  S.products = (prod.products||[]).map(function(p){
+    var specs = [];
+    if(p.specs && typeof p.specs==='object'){
+      Object.keys(p.specs).forEach(function(k){ specs.push([k, String(p.specs[k])]); });
+    }
+    // Older files kept filenames on the product itself. Move them across.
+    if(Array.isArray(p.images) && p.images.length && !S.photos[p.sku]) S.photos[p.sku] = p.images.slice();
+    return {
+      sku:String(p.sku||''), category:String(p.category||''), name:String(p.name||''),
+      rate:String(p.rate==null?'':p.rate), rateNote:String(p.rateNote||''),
+      packing:String(p.packing||''), specs:specs
+    };
+  });
+}
+
+function start(){
+  $('app').hidden = false;
+  $('dock').hidden = false;
+  bindTabs();
+  bindProducts();
+  bindCats();
+  bindPhotos();
+  bindPublish();
+  drawAll();
+}
+
+function mark(){ S.dirty = true; document.body.classList.add('dirty'); dockMsg(); }
+function dockMsg(){
+  $('dockMsg').innerHTML = S.dirty
+    ? '<b>Changes not downloaded yet.</b> They live only in this tab.'
+    : S.products.length + ' products · ' + S.cats.length + ' categories';
+}
+window.addEventListener('beforeunload', function(e){
+  if(S.dirty){ e.preventDefault(); e.returnValue = ''; }
+});
+
+/* ---------------- tabs ---------------- */
+
+function bindTabs(){
+  $('tabs').addEventListener('click', function(e){
+    var b = e.target.closest('button[data-tab]'); if(!b) return;
+    S.tab = b.dataset.tab;
+    Array.prototype.forEach.call($('tabs').children, function(x){
+      x.setAttribute('aria-selected', String(x.dataset.tab === S.tab));
+    });
+    ['products','cats','photos','publish'].forEach(function(t){
+      $('tab-'+t).hidden = (t !== S.tab);
+    });
+    window.scrollTo(0,0);
+    if(S.tab === 'photos')  drawPhotoTab();
+    if(S.tab === 'publish') drawChecks();
+  });
+}
+
+function drawAll(){
+  $('tcProd').textContent = S.products.length;
+  $('tcCat').textContent  = S.cats.length;
+  $('tcPic').textContent  = countWithPhotos();
+  drawCatSelect();
+  drawProducts();
+  drawCats();
+  drawPhotoTab();
+  dockMsg();
+}
+
+/* ---------------- products ---------------- */
+
+function catName(key){
+  for(var i=0;i<S.cats.length;i++) if(S.cats[i].key===key) return S.cats[i].name;
+  return '';
+}
+function photosOf(sku){ return S.photos[sku] || []; }
+function isEmbedded(s){ return /^data:/.test(String(s)); }
+function thumbSrc(s){
+  s = String(s||'');
+  return /^(https?:|data:|\.{0,2}\/)/.test(s) ? s : 'images/' + s;
+}
+function countWithPhotos(){
+  return S.products.filter(function(p){ return photosOf(p.sku).length; }).length;
+}
+
+function drawCatSelect(){
+  var sel = $('pcat'), cur = sel.value;
+  sel.innerHTML = '<option value="">All categories</option>' + S.cats.map(function(c){
+    return '<option value="'+esc(c.key)+'">'+esc(c.name)+'</option>';
+  }).join('');
+  sel.value = cur;
+}
+
+function visibleProducts(){
+  var t = S.filter.trim().toLowerCase();
+  return S.products.filter(function(p){
+    if(S.catFilter && p.category !== S.catFilter) return false;
+    if(!t) return true;
+    var hay = (p.name+' '+p.sku+' '+p.packing+' '+p.specs.map(function(s){return s[0]+' '+s[1];}).join(' ')).toLowerCase();
+    return hay.indexOf(t) > -1;
+  });
+}
+
+function drawProducts(){
+  var list = visibleProducts();
+  if(!list.length){
+    $('prows').innerHTML = '<div class="empty">' +
+      (S.products.length ? 'No products match that search.' : 'No products yet. Press Add to create the first one.') +
+      '</div>';
+    return;
+  }
+  $('prows').innerHTML = list.map(rowHTML).join('');
+}
+
+function rowHTML(p){
+  var open = (S.open === p.sku);
+  var pics = photosOf(p.sku);
+  var first = pics[0];
+  var thumb = first
+    ? '<span class="thumb"><img src="'+esc(thumbSrc(first))+'" alt="" onerror="this.parentNode.innerHTML=\'<i>?</i>\'"></span>'
+    : '<span class="thumb"><i>NO PIC</i></span>';
+  var warn = !pics.length ? '<span class="warn">No photo</span>' : '';
+  var head =
+    '<button class="rhead" data-open="'+esc(p.sku)+'">'+ thumb +
+      '<span class="meta">'+
+        '<span class="nm">'+esc(p.name || 'Untitled product')+'</span>'+
+        '<span class="ln">'+
+          '<span class="sku">'+esc(p.sku||'no code')+'</span>'+
+          '<span class="rate">₹'+esc(p.rate||'—')+'</span>'+
+          '<span class="pill">'+esc(catName(p.category)||'no category')+'</span>'+ warn +
+        '</span>'+
+      '</span>'+
+      '<svg class="caret" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>'+
+    '</button>';
+  return '<div class="row'+(open?' open':'')+'" data-sku="'+esc(p.sku)+'">' + head +
+    (open ? '<div class="rbody">' + bodyHTML(p) + '</div>' : '') + '</div>';
+}
+
+function bodyHTML(p){
+  var opts = S.cats.map(function(c){
+    return '<option value="'+esc(c.key)+'"'+(c.key===p.category?' selected':'')+'>'+esc(c.name)+'</option>';
+  }).join('');
+  var specs = p.specs.map(function(s,i){
+    return '<div class="specrow">'+
+      '<input class="in k" data-f="speck" data-i="'+i+'" value="'+esc(s[0])+'" placeholder="Length" aria-label="Spec name">'+
+      '<input class="in v" data-f="specv" data-i="'+i+'" value="'+esc(s[1])+'" placeholder="6 feet" aria-label="Spec value">'+
+      '<button class="x" data-act="delspec" data-i="'+i+'" aria-label="Remove spec">×</button>'+
+    '</div>';
+  }).join('');
+
+  var pics = photosOf(p.sku).map(function(src,i){
+    var body = isEmbedded(src) || /^https?:/.test(src)
+      ? '<img src="'+esc(thumbSrc(src))+'" alt="" onerror="this.outerHTML=\'<div class=&quot;miss&quot;>broken</div>\'">'
+      : '<div class="miss">'+esc(src)+'</div>';
+    return '<div class="shot'+(i===0?' first':'')+'">'+ body +
+      '<button class="kill" data-act="delpic" data-i="'+i+'" aria-label="Remove photo">×</button>'+
+      (i===0 ? '<span class="cover">Cover</span>'
+             : '<button class="cover" data-act="makecover" data-i="'+i+'">Make cover</button>') +
+    '</div>';
+  }).join('');
+
+  return ''+
+  '<div class="grid2">'+
+    '<label class="field"><span>Product name</span><input class="in" data-f="name" value="'+esc(p.name)+'" placeholder="SMD Star Curtain"></label>'+
+    '<label class="field"><span>Product code</span><input class="in mono" data-f="sku" value="'+esc(p.sku)+'" placeholder="RB-CUR-01"></label>'+
+  '</div>'+
+  '<div class="grid2">'+
+    '<label class="field"><span>Category</span><select class="in" data-f="category">'+opts+'</select></label>'+
+    '<label class="field"><span>Rate — figure only</span><input class="in mono" data-f="rate" value="'+esc(p.rate)+'" inputmode="decimal" placeholder="180"></label>'+
+  '</div>'+
+  '<div class="grid2">'+
+    '<label class="field"><span>Rate note — optional</span><input class="in" data-f="rateNote" value="'+esc(p.rateNote)+'" placeholder="set of 2"></label>'+
+    '<label class="field"><span>Packing</span><input class="in" data-f="packing" value="'+esc(p.packing)+'" placeholder="50 pcs / carton"></label>'+
+  '</div>'+
+
+  '<div class="sub">Specifications</div>'+ specs +
+  '<button class="btn sm" data-act="addspec">Add a spec</button>'+
+
+  '<div class="sub">Photos</div>'+
+  (pics ? '<div class="shots">'+pics+'</div>' : '<p style="font-size:13px;color:var(--faint);margin:0 0 10px">No photos on this product yet.</p>')+
+  '<button class="btn sm" data-act="addpic">Add photos</button>'+
+
+  '<div class="rowacts">'+
+    '<button class="btn sm" data-act="dupe">Duplicate</button>'+
+    '<span class="sp"></span>'+
+    '<button class="btn sm danger" data-act="del">Delete product</button>'+
+  '</div>';
+}
+
+function findProduct(sku){
+  for(var i=0;i<S.products.length;i++) if(S.products[i].sku===sku) return S.products[i];
+  return null;
+}
+
+function bindProducts(){
+  $('pq').addEventListener('input', function(e){ S.filter = e.target.value; drawProducts(); });
+  $('pcat').addEventListener('change', function(e){ S.catFilter = e.target.value; drawProducts(); });
+  $('addProd').addEventListener('click', addProduct);
+
+  var host = $('prows');
+
+  host.addEventListener('click', function(e){
+    var toggle = e.target.closest('[data-open]');
+    if(toggle){
+      var sku = toggle.dataset.open;
+      S.open = (S.open === sku) ? null : sku;
+      drawProducts();
+      return;
+    }
+    var act = e.target.closest('[data-act]');
+    if(!act) return;
+    var row = act.closest('.row'); if(!row) return;
+    var p = findProduct(row.dataset.sku); if(!p) return;
+    var i = act.dataset.i != null ? +act.dataset.i : -1;
+    doAction(act.dataset.act, p, i);
+  });
+
+  // Text edits apply on the way out of the field, so a half-typed code
+  // never orphans the photos attached to it.
+  host.addEventListener('change', function(e){
+    var f = e.target.dataset.f; if(!f) return;
+    var row = e.target.closest('.row'); if(!row) return;
+    var p = findProduct(row.dataset.sku); if(!p) return;
+    applyField(p, f, e.target);
+  });
+}
+
+function applyField(p, f, input){
+  var v = input.value;
+  if(f === 'speck' || f === 'specv'){
+    var i = +input.dataset.i;
+    if(p.specs[i]) p.specs[i][f === 'speck' ? 0 : 1] = v;
+    mark();
+    return;
+  }
+  if(f === 'sku'){
+    var next = v.trim();
+    if(!next){ input.value = p.sku; return; }
+    if(next !== p.sku){
+      if(findProduct(next)){
+        alert('The code "' + next + '" is already used by another product. Codes must be unique.');
+        input.value = p.sku;
+        return;
+      }
+      if(S.photos[p.sku]){ S.photos[next] = S.photos[p.sku]; delete S.photos[p.sku]; }
+      if(S.open === p.sku) S.open = next;
+      p.sku = next;
+      mark(); drawProducts(); drawAll();
+      return;
+    }
+    return;
+  }
+  if(f === 'rate'){ v = v.replace(/[^\d.]/g,''); input.value = v; }
+  p[f] = v;
+  mark();
+  // Changing the category re-sorts the list, so a full redraw is needed.
+  // A name or rate edit only affects one line — patch it in place instead,
+  // otherwise the row is rebuilt while the person is still tabbing through it.
+  if(f === 'category'){ drawProducts(); drawCats(); }
+  else if(f === 'name' || f === 'rate') refreshHead(p);
+}
+
+function refreshHead(p){
+  var rows = $('prows').children;
+  for(var i=0;i<rows.length;i++){
+    if(rows[i].dataset.sku !== p.sku) continue;
+    var nm = rows[i].querySelector('.rhead .nm');
+    var rt = rows[i].querySelector('.rhead .rate');
+    if(nm) nm.textContent = p.name || 'Untitled product';
+    if(rt) rt.textContent = '₹' + (p.rate || '—');
+    return;
+  }
+}
+
+function doAction(act, p, i){
+  if(act === 'addspec'){ p.specs.push(['','']); mark(); drawProducts(); return; }
+  if(act === 'delspec'){ p.specs.splice(i,1); mark(); drawProducts(); return; }
+
+  if(act === 'delpic'){
+    var arr = photosOf(p.sku).slice(); arr.splice(i,1);
+    if(arr.length) S.photos[p.sku] = arr; else delete S.photos[p.sku];
+    mark(); drawProducts(); drawAll(); return;
+  }
+  if(act === 'makecover'){
+    var a = photosOf(p.sku).slice();
+    a.unshift(a.splice(i,1)[0]);
+    S.photos[p.sku] = a;
+    mark(); drawProducts(); return;
+  }
+  if(act === 'addpic'){
+    var inp = document.createElement('input');
+    inp.type = 'file'; inp.accept = 'image/*'; inp.multiple = true;
+    inp.addEventListener('change', function(){
+      var files = Array.prototype.slice.call(inp.files);
+      if(!files.length) return;
+      shrinkAll(files, function(done){
+        var cur = photosOf(p.sku).slice();
+        S.photos[p.sku] = cur.concat(done.map(function(d){ return d.data; }));
+        mark(); drawProducts(); drawAll();
+      });
+    });
+    inp.click();
+    return;
+  }
+  if(act === 'dupe'){
+    var copy = JSON.parse(JSON.stringify(p));
+    copy.sku = uniqueSku(p.sku);
+    copy.name = p.name + ' (copy)';
+    S.products.splice(S.products.indexOf(p)+1, 0, copy);
+    if(photosOf(p.sku).length) S.photos[copy.sku] = photosOf(p.sku).slice();
+    S.open = copy.sku;
+    mark(); drawAll(); return;
+  }
+  if(act === 'del'){
+    if(!confirm('Delete "' + (p.name||p.sku) + '"? This cannot be undone from here.')) return;
+    S.products.splice(S.products.indexOf(p), 1);
+    delete S.photos[p.sku];
+    if(S.open === p.sku) S.open = null;
+    mark(); drawAll(); return;
+  }
+}
+
+function uniqueSku(base){
+  var n = 2, cand;
+  do { cand = base + '-' + n; n++; } while(findProduct(cand));
+  return cand;
+}
+
+function addProduct(){
+  var cat = S.catFilter || (S.cats[0] && S.cats[0].key) || '';
+  var prefix = 'RB-' + (cat || 'NEW') + '-';
+  var n = 1, sku;
+  do { sku = prefix + String(n).padStart(2,'0'); n++; } while(findProduct(sku));
+  var p = { sku:sku, category:cat, name:'', rate:'', rateNote:'', packing:'', specs:[['Colour','']] };
+  S.products.unshift(p);
+  S.open = sku;
+  S.filter = ''; $('pq').value = '';
+  mark(); drawAll();
+  window.scrollTo(0, 0);
+}
+
+/* ---------------- categories ---------------- */
+
+function drawCats(){
+  if(!S.cats.length){
+    $('crows').innerHTML = '<div class="empty">No categories yet. Add one to start.</div>';
+    return;
+  }
+  $('crows').innerHTML = S.cats.map(function(c, i){
+    var n = S.products.filter(function(p){ return p.category === c.key; }).length;
+    return '<div class="row" data-ci="'+i+'"><div class="rbody" style="border-top:none; padding-top:14px">'+
+      '<div class="grid2">'+
+        '<label class="field"><span>Section name</span><input class="in" data-cf="name" value="'+esc(c.name)+'" placeholder="Curtain &amp; Festive Lights"></label>'+
+        '<label class="field"><span>Short code</span><input class="in mono" data-cf="key" value="'+esc(c.key)+'" placeholder="CUR"></label>'+
+      '</div>'+
+      '<label class="field"><span>Description</span><textarea class="in" data-cf="blurb" placeholder="One line buyers read at the top of the section">'+esc(c.blurb)+'</textarea></label>'+
+      '<div class="rowacts" style="margin-top:8px">'+
+        '<span style="font-size:12.5px;color:var(--muted);align-self:center">'+n+' product'+(n===1?'':'s')+'</span>'+
+        '<span class="sp"></span>'+
+        '<button class="btn sm" data-cact="up" '+(i===0?'disabled':'')+'>Move up</button>'+
+        '<button class="btn sm" data-cact="down" '+(i===S.cats.length-1?'disabled':'')+'>Move down</button>'+
+        '<button class="btn sm danger" data-cact="del">Delete</button>'+
+      '</div>'+
+    '</div></div>';
+  }).join('');
+}
+
+function bindCats(){
+  $('addCat').addEventListener('click', function(){
+    var n = 1, key;
+    do { key = 'NEW' + n; n++; } while(S.cats.some(function(c){ return c.key === key; }));
+    S.cats.push({ key:key, name:'New section', blurb:'' });
+    mark(); drawAll();
+  });
+
+  $('crows').addEventListener('change', function(e){
+    var f = e.target.dataset.cf; if(!f) return;
+    var row = e.target.closest('[data-ci]'); if(!row) return;
+    var c = S.cats[+row.dataset.ci]; if(!c) return;
+
+    if(f === 'key'){
+      var next = e.target.value.trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
+      if(!next){ e.target.value = c.key; return; }
+      if(next !== c.key && S.cats.some(function(x){ return x.key === next; })){
+        alert('The code "' + next + '" is already used by another category.');
+        e.target.value = c.key;
+        return;
+      }
+      S.products.forEach(function(p){ if(p.category === c.key) p.category = next; });
+      c.key = next;
+    } else {
+      c[f] = e.target.value;
+    }
+    mark(); drawAll();
+  });
+
+  $('crows').addEventListener('click', function(e){
+    var b = e.target.closest('[data-cact]'); if(!b) return;
+    var row = b.closest('[data-ci]'); var i = +row.dataset.ci;
+    var act = b.dataset.cact;
+
+    if(act === 'up' && i > 0){ S.cats.splice(i-1, 0, S.cats.splice(i,1)[0]); }
+    else if(act === 'down' && i < S.cats.length-1){ S.cats.splice(i+1, 0, S.cats.splice(i,1)[0]); }
+    else if(act === 'del'){
+      var used = S.products.filter(function(p){ return p.category === S.cats[i].key; }).length;
+      if(used){
+        alert('"' + S.cats[i].name + '" still holds ' + used + ' product' + (used===1?'':'s') +
+              '.\n\nMove them to another section first, then delete this one.');
+        return;
+      }
+      if(!confirm('Delete the section "' + S.cats[i].name + '"?')) return;
+      S.cats.splice(i,1);
+    }
+    mark(); drawAll();
+  });
+}
+
+/* ---------------- photos ---------------- */
+
+function shrink(file){
+  var cfg = QUALITY[S.quality];
+  return new Promise(function(resolve, reject){
+    if(!/^image\//.test(file.type) && !/\.(jpe?g|png|webp|gif|bmp)$/i.test(file.name)){
+      return reject(new Error('not an image'));
+    }
+    var fr = new FileReader();
+    fr.onerror = function(){ reject(new Error('unreadable')); };
+    fr.onload = function(){
+      var img = new Image();
+      img.onerror = function(){ reject(new Error('format')); };
+      img.onload = function(){
+        var w = img.naturalWidth, h = img.naturalHeight;
+        if(!w || !h) return reject(new Error('format'));
+        var k = Math.min(1, cfg.edge / Math.max(w,h));
+        var cw = Math.max(1, Math.round(w*k)), ch = Math.max(1, Math.round(h*k));
+        var cv = document.createElement('canvas');
+        cv.width = cw; cv.height = ch;
+        var ctx = cv.getContext('2d');
+        ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,cw,ch);
+        ctx.drawImage(img, 0, 0, cw, ch);
+        try { resolve(cv.toDataURL('image/jpeg', cfg.q)); }
+        catch(err){ reject(new Error('format')); }
+      };
+      img.src = fr.result;
+    };
+    fr.readAsDataURL(file);
+  });
+}
+
+// One at a time, so a folder of 200 photos doesn't exhaust memory.
+function shrinkAll(files, done){
+  var out = [], bad = [], n = 0;
+  $('prog').hidden = false;
+  (function next(){
+    if(n >= files.length){
+      $('prog').hidden = true;
+      done(out, bad);
+      return;
+    }
+    var f = files[n];
+    $('progBar').style.width = Math.round((n/files.length)*100) + '%';
+    $('progTxt').textContent = 'Preparing photo ' + (n+1) + ' of ' + files.length + ' — ' + f.name;
+    shrink(f).then(function(data){
+      out.push({ name:f.name, data:data });
+    }).catch(function(e){
+      bad.push({ name:f.name, why:e.message });
+    }).then(function(){
+      n++;
+      setTimeout(next, 0);
+    });
+  })();
+}
+
+// Match a filename to a product code: exact first, then the longest
+// known code the filename starts with, so RB-CUR-01_2.jpg lands correctly.
+function matchSku(filename){
+  var base = String(filename).replace(/\.[^.]+$/,'').trim().toUpperCase();
+  var index = {};
+  S.products.forEach(function(p){ index[p.sku.toUpperCase()] = p.sku; });
+  if(index[base]) return { sku:index[base], n:0 };
+  var best = null;
+  for(var k in index){ if(base.indexOf(k) === 0 && (!best || k.length > best.length)) best = k; }
+  if(!best) return null;
+  var rest = base.slice(best.length).replace(/^[^0-9]*/,'');
+  var num = parseInt(rest, 10);
+  return { sku:index[best], n:isNaN(num) ? 0 : num };
+}
+
+function ingest(files){
+  files = files.filter(function(f){
+    return /^image\//.test(f.type) || /\.(jpe?g|png|webp|gif|bmp|heic|heif)$/i.test(f.name);
+  });
+  if(!files.length){
+    $('report').innerHTML = '<div class="note bad">No image files in what you dropped. Try again with a folder of photos.</div>';
+    return;
+  }
+
+  var hits = [], misses = [];
+  files.forEach(function(f){
+    var m = matchSku(f.name);
+    if(m) hits.push({ file:f, sku:m.sku, n:m.n });
+    else misses.push(f.name);
+  });
+
+  if(!hits.length){
+    $('report').innerHTML = '<div class="note bad"><b>Nothing matched.</b>' +
+      '<p style="margin:6px 0 0">Photo filenames need to start with the product code, like <code>RB-CUR-01_1.jpg</code>. ' +
+      'These did not: ' + esc(misses.slice(0,5).join(', ')) + (misses.length>5 ? ' and ' + (misses.length-5) + ' more' : '') + '.</p>' +
+      '<p style="margin:6px 0 0">You can still add photos one product at a time from the Products tab.</p></div>';
+    return;
+  }
+
+  hits.sort(function(a,b){ return a.n - b.n || a.file.name.localeCompare(b.file.name); });
+
+  shrinkAll(hits.map(function(h){ return h.file; }), function(done, bad){
+    var byName = {};
+    done.forEach(function(d){ byName[d.name] = d.data; });
+
+    var touched = {}, added = 0;
+    hits.forEach(function(h){
+      var data = byName[h.file.name];
+      if(!data) return;
+      if(!touched[h.sku]){
+        touched[h.sku] = true;
+        if(S.mode === 'replace') S.photos[h.sku] = [];
+        else if(!S.photos[h.sku]) S.photos[h.sku] = [];
+      }
+      S.photos[h.sku].push(data);
+      added++;
+    });
+
+    mark(); drawAll();
+
+    var lines = '<div class="note good"><b>' + added + ' photo' + (added===1?'':'s') +
+      ' added to ' + Object.keys(touched).length + ' product' + (Object.keys(touched).length===1?'':'s') + '.</b>' +
+      '<p style="margin:6px 0 0">Check them on the Products tab, then download the files from Publish.</p></div>';
+
+    if(misses.length){
+      lines += '<div class="note info"><b>' + misses.length + ' file' + (misses.length===1?'':'s') +
+        ' had no matching product code.</b><ul>' +
+        misses.slice(0,8).map(function(m){ return '<li><code>'+esc(m)+'</code></li>'; }).join('') +
+        (misses.length>8 ? '<li>and ' + (misses.length-8) + ' more</li>' : '') +
+        '</ul><p style="margin:7px 0 0">Rename them to start with the product code, or add them by hand from the Products tab.</p></div>';
+    }
+    if(bad.length){
+      lines += '<div class="note bad"><b>' + bad.length + ' file' + (bad.length===1?'':'s') +
+        ' could not be read.</b><ul>' +
+        bad.slice(0,6).map(function(b){
+          return '<li><code>'+esc(b.name)+'</code>' + (b.why==='format' ? ' — this format cannot be opened in a browser. iPhone HEIC photos need converting to JPG first.' : '') + '</li>';
+        }).join('') +
+        (bad.length>6 ? '<li>and ' + (bad.length-6) + ' more</li>' : '') + '</ul></div>';
+    }
+    $('report').innerHTML = lines;
+  });
+}
+
+// Folder drops arrive as directory entries, which have to be walked.
+function filesFromDrop(dt){
+  var items = dt.items;
+  if(!items || !items.length || typeof items[0].webkitGetAsEntry !== 'function'){
+    return Promise.resolve(Array.prototype.slice.call(dt.files || []));
+  }
+  var roots = [];
+  for(var i=0;i<items.length;i++){
+    var en = items[i].webkitGetAsEntry();
+    if(en) roots.push(en);
+  }
+  if(!roots.length) return Promise.resolve(Array.prototype.slice.call(dt.files || []));
+  var out = [];
+  return Promise.all(roots.map(function(r){ return walk(r, out); })).then(function(){ return out; });
+}
+function walk(entry, out){
+  return new Promise(function(res){
+    if(entry.isFile){
+      entry.file(function(f){ out.push(f); res(); }, function(){ res(); });
+      return;
+    }
+    if(!entry.isDirectory){ res(); return; }
+    var rdr = entry.createReader(), all = [];
+    (function batch(){
+      rdr.readEntries(function(list){
+        if(!list.length){
+          Promise.all(all.map(function(e){ return walk(e, out); })).then(res);
+          return;
+        }
+        all = all.concat(Array.prototype.slice.call(list));
+        batch();
+      }, function(){ res(); });
+    })();
+  });
+}
+
+function bindPhotos(){
+  $('qOpts').addEventListener('click', function(e){
+    var b = e.target.closest('[data-q]'); if(!b) return;
+    S.quality = b.dataset.q;
+    Array.prototype.forEach.call($('qOpts').children, function(x){
+      x.setAttribute('aria-pressed', String(x.dataset.q === S.quality));
+    });
+  });
+  $('mOpts').addEventListener('click', function(e){
+    var b = e.target.closest('[data-m]'); if(!b) return;
+    S.mode = b.dataset.m;
+    Array.prototype.forEach.call($('mOpts').children, function(x){
+      x.setAttribute('aria-pressed', String(x.dataset.m === S.mode));
+    });
+  });
+
+  var drop = $('drop');
+  ['dragenter','dragover'].forEach(function(ev){
+    drop.addEventListener(ev, function(e){ e.preventDefault(); drop.classList.add('hot'); });
+  });
+  ['dragleave','drop'].forEach(function(ev){
+    drop.addEventListener(ev, function(e){ e.preventDefault(); drop.classList.remove('hot'); });
+  });
+  drop.addEventListener('drop', function(e){
+    e.preventDefault();
+    filesFromDrop(e.dataTransfer).then(ingest);
+  });
+
+  $('pickFolder').addEventListener('click', function(){ $('inFolder').click(); });
+  $('pickFiles').addEventListener('click', function(){ $('inFiles').click(); });
+  $('inFolder').addEventListener('change', function(e){ ingest(Array.prototype.slice.call(e.target.files)); e.target.value=''; });
+  $('inFiles').addEventListener('change',  function(e){ ingest(Array.prototype.slice.call(e.target.files)); e.target.value=''; });
+
+  $('stripPics').addEventListener('click', function(){
+    var n = 0;
+    Object.keys(S.photos).forEach(function(sku){
+      var keep = S.photos[sku].filter(function(s){ if(isEmbedded(s)){ n++; return false; } return true; });
+      if(keep.length) S.photos[sku] = keep; else delete S.photos[sku];
+    });
+    if(!n){ alert('There are no embedded photos to remove.'); return; }
+    mark(); drawAll();
+    $('report').innerHTML = '<div class="note info">Removed ' + n + ' embedded photo' + (n===1?'':'s') + '.</div>';
+  });
+}
+
+function bytesOfPhotos(){
+  var s = JSON.stringify(S.photos);
+  return s ? s.length : 0;
+}
+function human(bytes){
+  if(bytes < 1024) return bytes + ' B';
+  if(bytes < 1024*1024) return Math.round(bytes/1024) + ' KB';
+  return (bytes/1048576).toFixed(1) + ' MB';
+}
+function drawPhotoTab(){
+  var have = countWithPhotos();
+  $('mHave').textContent = have;
+  $('mNone').textContent = S.products.length - have;
+  $('mSize').textContent = human(bytesOfPhotos());
+}
+
+/* ---------------- publish ---------------- */
+
+function buildProducts(){
+  return {
+    categories: S.cats.map(function(c){ return { key:c.key, name:c.name, blurb:c.blurb }; }),
+    products: S.products.map(function(p){
+      var o = { sku:p.sku, category:p.category, name:p.name, rate:p.rate };
+      if(p.rateNote) o.rateNote = p.rateNote;
+      if(p.packing)  o.packing  = p.packing;
+      var specs = {};
+      p.specs.forEach(function(s){
+        var k = String(s[0]).trim();
+        if(k) specs[k] = String(s[1]);
+      });
+      if(Object.keys(specs).length) o.specs = specs;
+      return o;
+    })
+  };
+}
+function buildImages(){
+  var out = {};
+  S.products.forEach(function(p){
+    var a = S.photos[p.sku];
+    if(a && a.length) out[p.sku] = a;
+  });
+  return out;
+}
+
+function problems(){
+  var errs = [], warns = [];
+  var seen = {};
+  var keys = {};
+  S.cats.forEach(function(c){
+    if(!c.key) errs.push('A category has no short code.');
+    else if(keys[c.key]) errs.push('Two categories share the code <code>'+esc(c.key)+'</code>.');
+    keys[c.key] = true;
+    if(!c.name) warns.push('Category <code>'+esc(c.key)+'</code> has no name.');
+  });
+  S.products.forEach(function(p, i){
+    var who = p.name ? '"'+esc(p.name)+'"' : 'Product #'+(i+1);
+    if(!p.sku) errs.push(who + ' has no product code.');
+    else if(seen[p.sku]) errs.push('Two products share the code <code>'+esc(p.sku)+'</code>.');
+    seen[p.sku] = true;
+    if(!p.name) errs.push('Product <code>'+esc(p.sku)+'</code> has no name.');
+    if(p.rate === '') errs.push(who + ' has no rate.');
+    if(!p.category) errs.push(who + ' is not in a category.');
+    else if(!keys[p.category]) errs.push(who + ' points at category <code>'+esc(p.category)+'</code>, which does not exist.');
+    if(!photosOf(p.sku).length) warns.push(who + ' has no photo.');
+  });
+  return { errs:errs, warns:warns };
+}
+
+function drawChecks(){
+  var r = problems();
+  var size = bytesOfPhotos();
+  var html = '';
+
+  if(r.errs.length){
+    html += '<div class="note bad"><b>' + r.errs.length + ' thing' + (r.errs.length===1?'':'s') +
+      ' to fix before publishing.</b><ul>' +
+      r.errs.slice(0,10).map(function(e){ return '<li>'+e+'</li>'; }).join('') +
+      (r.errs.length>10 ? '<li>and ' + (r.errs.length-10) + ' more</li>' : '') + '</ul></div>';
+  } else {
+    html += '<div class="note good"><b>Everything checks out.</b> ' + S.products.length +
+      ' products across ' + S.cats.length + ' categories, ready to download.</div>';
+  }
+
+  if(r.warns.length){
+    html += '<div class="note info"><b>' + r.warns.length + ' thing' + (r.warns.length===1?'':'s') +
+      ' worth a look — the site will still work.</b><ul>' +
+      r.warns.slice(0,6).map(function(w){ return '<li>'+w+'</li>'; }).join('') +
+      (r.warns.length>6 ? '<li>and ' + (r.warns.length-6) + ' more</li>' : '') + '</ul></div>';
+  }
+
+  if(size > 22*1024*1024){
+    html += '<div class="note bad"><b>images.json is ' + human(size) + ', which is too big to drag onto GitHub.</b>' +
+      '<p style="margin:6px 0 0">On the Photos tab, switch photo size to Small and drop your folder in again.</p></div>';
+  } else if(size > 9*1024*1024){
+    html += '<div class="note info"><b>images.json is ' + human(size) + '.</b>' +
+      '<p style="margin:6px 0 0">That uploads fine, but the catalogue will feel slower on mobile data. Switching to Small on the Photos tab would roughly halve it.</p></div>';
+  }
+
+  $('checks').innerHTML = html;
+  $('dlBoth').disabled = false;
+}
+
+function download(name, obj){
+  var blob = new Blob([JSON.stringify(obj, null, 2) + '\n'], {type:'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = name;
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); }, 1500);
+}
+function saveProducts(){ download('products.json', buildProducts()); }
+function saveImages(){ download('images.json', buildImages()); }
+function saveBoth(){
+  saveProducts();
+  // Browsers throttle back-to-back downloads, so stagger the second.
+  setTimeout(saveImages, 800);
+  S.dirty = false;
+  document.body.classList.remove('dirty');
+  dockMsg();
+}
+
+function bindPublish(){
+  $('dlBoth').addEventListener('click', saveBoth);
+  $('dlProd').addEventListener('click', saveProducts);
+  $('dlImg').addEventListener('click', saveImages);
+  $('dockSave').addEventListener('click', function(){
+    S.tab = 'publish';
+    Array.prototype.forEach.call($('tabs').children, function(x){
+      x.setAttribute('aria-selected', String(x.dataset.tab === 'publish'));
+    });
+    ['products','cats','photos','publish'].forEach(function(t){ $('tab-'+t).hidden = (t !== 'publish'); });
+    drawChecks();
+    window.scrollTo(0,0);
+  });
+
+  $('rawShow').addEventListener('click', function(){
+    $('rawBox').value = JSON.stringify(buildProducts(), null, 2);
+    $('rawMsg').innerHTML = '<div class="note info" style="margin-top:12px">This is your product data as it stands. Photos are held separately.</div>';
+  });
+  $('rawLoad').addEventListener('click', function(){
+    var t = $('rawBox').value.trim();
+    if(!t){ $('rawMsg').innerHTML = '<div class="note bad" style="margin-top:12px">The box is empty. Paste a full products.json first.</div>'; return; }
+    var d;
+    try { d = JSON.parse(t); }
+    catch(e){
+      $('rawMsg').innerHTML = '<div class="note bad" style="margin-top:12px"><b>That is not valid JSON.</b><p style="margin:6px 0 0">'+esc(e.message)+'</p></div>';
+      return;
+    }
+    if(!Array.isArray(d.categories) || !Array.isArray(d.products)){
+      $('rawMsg').innerHTML = '<div class="note bad" style="margin-top:12px">The file needs a <code>categories</code> list and a <code>products</code> list.</div>';
+      return;
+    }
+    if(!confirm('Replace everything currently open with this pasted data?')) return;
+    var keepPhotos = S.photos;
+    adopt(d, keepPhotos);
+    S.open = null;
+    mark(); drawAll(); drawChecks();
+    $('rawMsg').innerHTML = '<div class="note good" style="margin-top:12px">Loaded ' + S.products.length + ' products.</div>';
+  });
+}
+
+})();
+</script>
+</body>
+</html>
